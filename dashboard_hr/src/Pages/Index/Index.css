@@ -1,0 +1,287 @@
+/* src/Pages/Index/Index.css */
+
+/* --- VARIABEL WARNA (Asumsi sudah didefinisikan di index.css global) --- */
+:root {
+  --color-primary: #38bdf8; /* Biru */
+  --color-success: #10b981; /* Hijau */
+  --color-info: #f97316;    /* Orange */
+  --color-warning: #f59e0b;  /* Kuning */
+  --color-dark: #1e3a8a;
+  --color-card-background: #ffffff;
+  --color-border: #e5e7eb;
+  --color-background-light: #f9fafb;
+  --spacing-6: 1.5rem; /* Untuk gap-6 dan mb-6 */
+  --spacing-4: 1rem;
+}
+
+/* -------------------- MAIN LAYOUT & SIDEBAR -------------------- */
+
+.dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: var(--color-dark);
+  color: #ffffff;
+  padding: var(--spacing-4) 0;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.sidebar-header {
+  padding: 0 2rem;
+  margin-bottom: 2rem;
+}
+
+.sidebar-subtitle {
+  font-size: 0.8rem;
+  opacity: 0.7;
+  margin: 0;
+}
+
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin: var(--spacing-4) 0;
+  flex-grow: 1;
+}
+
+.sidebar-menu-item {
+  padding: 0.75rem 2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.sidebar-menu-item.active {
+  background-color: #0B2350;
+  border-left: 4px solid var(--color-primary);
+  font-weight: 600;
+}
+
+.sidebar-icon {
+  margin-right: 10px;
+  width: 20px;
+  text-align: center;
+}
+
+.sidebar-footer, .sidebar-collapse {
+    padding: 0.5rem 2rem;
+    cursor: pointer;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.main-content {
+  flex-grow: 1;
+  padding: 1rem 2rem;
+  background-color: var(--color-background-light);
+}
+
+/* --- HEADER --- */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.subtitle {
+    margin: 0;
+    color: #9ca3af;
+    font-size: 0.9rem;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-4);
+}
+
+.search-input {
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    min-width: 250px;
+}
+
+.user-avatar {
+    width: 40px; 
+    height: 40px; 
+    border-radius: 50%; 
+    background-color: #6b7280; 
+    color: white; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    font-weight: bold;
+}
+
+/* --- CARD Reusable Style --- */
+.dashboard-card {
+  background-color: var(--color-card-background);
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--color-border);
+}
+
+
+/* -------------------- 1. STATS GRID CONVERSION -------------------- */
+/* Original: grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6 */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* Default: col-1 */
+  gap: var(--spacing-6); /* gap-6 */
+  margin-bottom: var(--spacing-6); /* mb-6 */
+}
+
+@media (min-width: 768px) { /* md: breakpoint */
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr); /* md:grid-cols-2 */
+  }
+}
+
+@media (min-width: 1024px) { /* lg: breakpoint */
+  .stats-grid {
+    grid-template-columns: repeat(4, 1fr); /* lg:grid-cols-4 */
+  }
+}
+
+/* --- STAT CARD Styling --- */
+.stat-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  background-color: var(--color-card-background);
+  border: 1px solid var(--color-border);
+}
+
+.stat-card__title {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin: 0 0 0.25rem 0;
+}
+
+.stat-card__value {
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.stat-card__icon-container {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Tambahkan bayangan jika diinginkan */
+}
+
+.icon-placeholder {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+/* Warna Varian untuk Stat Card Icons */
+.stat-card--primary .icon-placeholder { color: var(--color-primary); }
+.stat-card--success .icon-placeholder { color: var(--color-success); }
+.stat-card--info .icon-placeholder { color: var(--color-info); }
+.stat-card--warning .icon-placeholder { color: var(--color-warning); }
+
+
+/* -------------------- 2. CHARTS ROW CONVERSION -------------------- */
+/* Original: grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6 */
+.charts-row {
+  display: grid;
+  grid-template-columns: 1fr; /* Default: col-1 */
+  gap: var(--spacing-6);
+  margin-bottom: var(--spacing-6);
+}
+
+@media (min-width: 1024px) { /* lg: breakpoint */
+  .charts-row {
+    grid-template-columns: repeat(3, 1fr); /* lg:grid-cols-3 */
+  }
+  /* lg:col-span-2 untuk EmployeeChart */
+  .employee-chart-area {
+    grid-column: span 2 / span 2; 
+  }
+}
+
+/* --- CHART & ACTIVITY PLACEHOLDER STYLING --- */
+.placeholder-content {
+    min-height: 250px; /* Memberi ruang visual untuk chart */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+    color: #9ca3af;
+}
+
+.activity-list {
+    margin-top: 1rem;
+}
+
+.activity-list-item {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #f3f4f6;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.activity-list-item:last-child {
+  border-bottom: none;
+}
+
+.activity-time {
+  font-size: 0.8rem;
+  color: #9ca3af;
+  flex-shrink: 0;
+  margin-left: var(--spacing-4);
+}
+
+
+/* -------------------- 3. UPCOMING LEAVE TABLE -------------------- */
+
+.table-cuti {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1.5rem;
+}
+
+.table-cuti th {
+  text-align: left;
+  padding: 0.75rem;
+  color: #9ca3af;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.table-cuti td {
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+    font-size: 0.95rem;
+}
+
+.table-cuti .empty-state {
+    padding: 2rem;
+    text-align: center;
+    color: #9ca3af;
+    font-style: italic;
+}

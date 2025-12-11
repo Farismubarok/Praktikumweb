@@ -1,0 +1,139 @@
+/* src/Pages/Gaji/Gaji.css */
+
+/* --- Variabel Warna (Replikasi dari Global/Page CSS sebelumnya) --- */
+:root {
+    --color-primary: #38bdf8;
+    --color-success: #10b981; 
+    --color-danger: #ef4444; 
+    --color-border: #e5e7eb;
+    --color-text-secondary: #6b7280;
+    --color-card-background: #ffffff;
+}
+
+/* --- Layout Header & Controls --- */
+
+.gaji-page-wrapper {
+    /* Asumsi padding dari main-content */
+    padding: 0; 
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.page-subtitle {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+}
+
+.gaji-controls {
+    margin-bottom: 1.5rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.gaji-controls .search-input {
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    border: 1px solid var(--color-border);
+    min-width: 300px;
+}
+
+/* Button */
+.btn-primary {
+    background-color: var(--color-primary);
+    color: white;
+    padding: 0.75rem 1.25rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+
+.btn-primary:hover {
+    background-color: #0ea5e9; 
+}
+
+/* Card Wrapper */
+.gaji-table-container {
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    background-color: var(--color-card-background);
+    border: 1px solid var(--color-border);
+    overflow-x: auto;
+}
+
+/* Tabel Gaji */
+.gaji-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.gaji-table th {
+    text-align: left;
+    padding: 1rem 0.75rem;
+    background-color: #f9fafb;
+    border-bottom: 2px solid var(--color-border);
+    color: #4b5563;
+    font-weight: 600;
+}
+
+.gaji-table td {
+    padding: 1rem 0.75rem;
+    border-bottom: 1px solid #f3f4f6;
+    vertical-align: middle;
+}
+
+.gaji-table tbody tr:hover {
+    background-color: #f9fafb;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem !important;
+    color: var(--color-text-secondary);
+    font-style: italic;
+}
+
+/* Helper Text/Layout Class */
+.text-right {
+    text-align: right;
+}
+
+.text-danger {
+    color: var(--color-danger);
+}
+
+.text-success {
+    color: var(--color-success);
+}
+
+.font-bold {
+    font-weight: 700;
+}
+
+/* Action Buttons */
+.btn-action {
+    padding: 0.4rem 0.75rem;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: opacity 0.2s;
+    background-color: #eff6ff; /* Light blue */
+    color: var(--color-primary);
+}
+
+.btn-action:hover {
+    opacity: 0.8;
+}

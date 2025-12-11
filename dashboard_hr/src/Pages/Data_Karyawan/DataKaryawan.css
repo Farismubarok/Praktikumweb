@@ -1,0 +1,156 @@
+/* src/Pages/Data_Karyawan/data_karyawan.css */
+
+/* --- Variabel Warna --- */
+/* Disarankan menggunakan variabel dari index.css global */
+:root {
+    --color-primary: #38bdf8;
+    --color-success: #10b981; 
+    --color-warning: #f59e0b;
+    --color-danger: #ef4444; 
+    --color-border: #e5e7eb;
+    --color-text-secondary: #6b7280;
+    --color-card-background: #ffffff;
+}
+
+/* Page Wrapper - Asumsi layout utama sudah di handle App.jsx atau Index.css */
+/* Jika tidak menggunakan DashboardLayout, pastikan styling ini sesuai dengan main-content */
+.employee-page-wrapper {
+    padding: 0; /* Padding sudah di handle oleh main-content jika App.jsx hanya mereturn komponen ini */
+}
+
+/* Header */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.page-subtitle {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+}
+
+/* Kontrol (Search/Filter) */
+.employee-controls {
+    margin-bottom: 1.5rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.employee-controls .search-input {
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    border: 1px solid var(--color-border);
+    min-width: 300px;
+}
+
+/* Button */
+.btn-primary {
+    background-color: var(--color-primary);
+    color: white;
+    padding: 0.75rem 1.25rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+
+.btn-primary:hover {
+    background-color: #0ea5e9; /* Sedikit lebih gelap */
+}
+
+/* Card Wrapper (menggunakan class dashboard-card yang sama) */
+.employee-table-container {
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    background-color: var(--color-card-background);
+    border: 1px solid var(--color-border);
+    overflow-x: auto; /* Untuk responsivitas tabel */
+}
+
+/* Tabel Karyawan */
+.employee-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.employee-table th {
+    text-align: left;
+    padding: 1rem 0.75rem;
+    background-color: #f9fafb;
+    border-bottom: 2px solid var(--color-border);
+    color: #4b5563;
+    font-weight: 600;
+}
+
+.employee-table td {
+    padding: 1rem 0.75rem;
+    border-bottom: 1px solid #f3f4f6;
+    vertical-align: middle;
+}
+
+.employee-table tbody tr:hover {
+    background-color: #f9fafb;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem !important;
+    color: var(--color-text-secondary);
+    font-style: italic;
+}
+
+/* Status Badge */
+.status-badge {
+    padding: 0.25rem 0.6rem;
+    border-radius: 9999px; /* Full rounded */
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.status-aktif {
+    background-color: #d1fae5; /* Light green */
+    color: var(--color-success);
+}
+
+.status-cuti {
+    background-color: #fef3c7; /* Light yellow */
+    color: var(--color-warning);
+}
+
+/* Action Buttons */
+.btn-action {
+    padding: 0.4rem 0.75rem;
+    margin-right: 0.4rem;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: opacity 0.2s;
+}
+.btn-action:hover {
+    opacity: 0.8;
+}
+
+.btn-action.view {
+    background-color: #eff6ff; /* Light blue */
+    color: var(--color-primary);
+}
+
+.btn-action.edit {
+    background-color: #fef3c7; /* Light yellow */
+    color: var(--color-warning);
+}
+
+.btn-action.delete {
+    background-color: #fee2e2; /* Light red */
+    color: var(--color-danger);
+}

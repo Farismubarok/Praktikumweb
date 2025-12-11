@@ -1,0 +1,130 @@
+/* src/Pages/Devisi/Devisi.css */
+
+/* --- Variabel Warna (Replikasi dari Global/Data_Karyawan.css) --- */
+:root {
+    --color-primary: #38bdf8;
+    --color-warning: #f59e0b;
+    --color-danger: #ef4444; 
+    --color-border: #e5e7eb;
+    --color-text-secondary: #6b7280;
+    --color-card-background: #ffffff;
+}
+
+/* --- Layout Header & Controls (Menggunakan pola yang sama dengan Data Karyawan) --- */
+
+.devisi-page-wrapper {
+    /* Asumsi padding dari main-content */
+    padding: 0; 
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.page-subtitle {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+}
+
+.devisi-controls {
+    margin-bottom: 1.5rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.devisi-controls .search-input {
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    border: 1px solid var(--color-border);
+    min-width: 300px;
+}
+
+/* Button */
+.btn-primary {
+    background-color: var(--color-primary);
+    color: white;
+    padding: 0.75rem 1.25rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+
+.btn-primary:hover {
+    background-color: #0ea5e9; 
+}
+
+/* Card Wrapper */
+.devisi-table-container {
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    background-color: var(--color-card-background);
+    border: 1px solid var(--color-border);
+    overflow-x: auto;
+}
+
+/* Tabel Divisi */
+.devisi-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.devisi-table th {
+    text-align: left;
+    padding: 1rem 0.75rem;
+    background-color: #f9fafb;
+    border-bottom: 2px solid var(--color-border);
+    color: #4b5563;
+    font-weight: 600;
+}
+
+.devisi-table td {
+    padding: 1rem 0.75rem;
+    border-bottom: 1px solid #f3f4f6;
+    vertical-align: middle;
+}
+
+.devisi-table tbody tr:hover {
+    background-color: #f9fafb;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem !important;
+    color: var(--color-text-secondary);
+    font-style: italic;
+}
+
+/* Action Buttons (sama seperti Data Karyawan) */
+.btn-action {
+    padding: 0.4rem 0.75rem;
+    margin-right: 0.4rem;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: opacity 0.2s;
+}
+.btn-action:hover {
+    opacity: 0.8;
+}
+
+.btn-action.edit {
+    background-color: #fef3c7; /* Light yellow */
+    color: var(--color-warning);
+}
+
+.btn-action.delete {
+    background-color: #fee2e2; /* Light red */
+    color: var(--color-danger);
+}
