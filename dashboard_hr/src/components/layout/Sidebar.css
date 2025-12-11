@@ -1,0 +1,135 @@
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: 16rem;
+  background: var(--sidebar);
+  color: var(--sidebar-foreground);
+  box-shadow: var(--sidebar-shadow);
+  transition: width 0.3s ease;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar.collapsed {
+  width: 5rem;
+}
+
+/* Header */
+.sidebar-header {
+  height: 4rem;
+  border-bottom: 1px solid var(--sidebar-border);
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+}
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.sidebar-logo.center {
+  width: 100%;
+  justify-content: center;
+}
+
+.sidebar-logo-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  background: var(--sidebar-accent);
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar-logo-icon span {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.sidebar-logo-text h1 {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.sidebar-logo-text p {
+  font-size: 0.75rem;
+  color: var(--sidebar-muted);
+}
+
+/* Navigation */
+.sidebar-nav {
+  flex: 1;
+  padding: 1.5rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  color: var(--sidebar-muted);
+  transition: 0.2s ease;
+}
+
+.sidebar-item.collapsed {
+  justify-content: center;
+}
+
+.sidebar-item:hover {
+  background: var(--sidebar-accent-hover);
+  color: var(--sidebar-foreground);
+}
+
+.sidebar-item.active {
+  background: var(--sidebar-accent);
+  color: var(--sidebar-accent-foreground);
+  font-weight: 500;
+}
+
+/* Icons */
+.sidebar-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+}
+
+/* Text */
+.sidebar-label {
+  font-size: 0.875rem;
+  animation: fadeIn 0.2s ease;
+}
+
+/* Bottom Buttons */
+.sidebar-bottom {
+  padding: 1rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.logout:hover {
+  background: rgba(var(--destructive-rgb), 0.2);
+  color: var(--destructive);
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

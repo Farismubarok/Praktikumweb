@@ -1,0 +1,110 @@
+/* Base Card */
+.stat-card {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  border: 1px solid var(--border);
+  box-shadow: var(--card-shadow);
+  animation: fade-in 0.3s ease forwards;
+  transition: box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+  box-shadow: var(--card-shadow-hover);
+}
+
+/* Layout */
+.stat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.stat-texts {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Text */
+.stat-title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--muted-foreground);
+  margin: 0;
+}
+
+.stat-value {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: var(--foreground);
+  margin: 0;
+}
+
+.stat-trend {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.trend-positive {
+  color: var(--success);
+}
+
+.trend-negative {
+  color: var(--destructive);
+}
+
+/* Icon box */
+.stat-icon {
+  padding: 12px;
+  border-radius: 12px;
+  display: flex;
+}
+
+.stat-icon-svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* Variant Colors */
+.stat-default .stat-icon {
+  background: var(--muted);
+  color: var(--muted-foreground);
+  border: 1px solid var(--border);
+}
+
+.stat-primary .stat-icon {
+  background: color-mix(in srgb, var(--primary) 10%, transparent);
+  color: var(--primary);
+  border: 1px solid color-mix(in srgb, var(--primary) 20%, transparent);
+}
+
+.stat-success .stat-icon {
+  background: color-mix(in srgb, var(--success) 10%, transparent);
+  color: var(--success);
+  border: 1px solid color-mix(in srgb, var(--success) 20%, transparent);
+}
+
+.stat-warning .stat-icon {
+  background: color-mix(in srgb, var(--warning) 10%, transparent);
+  color: var(--warning);
+  border: 1px solid color-mix(in srgb, var(--warning) 20%, transparent);
+}
+
+.stat-info .stat-icon {
+  background: color-mix(in srgb, var(--info) 10%, transparent);
+  color: var(--info);
+  border: 1px solid color-mix(in srgb, var(--info) 20%, transparent);
+}
+
+/* Animations */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

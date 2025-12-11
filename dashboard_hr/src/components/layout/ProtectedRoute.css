@@ -1,0 +1,22 @@
+.protected-loading-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--background);
+}
+
+.protected-loading-text {
+  color: var(--muted-foreground);
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+/* Pulse effect mirip tailwind animate-pulse */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}

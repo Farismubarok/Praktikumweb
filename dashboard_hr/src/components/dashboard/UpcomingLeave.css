@@ -1,0 +1,108 @@
+/* Card container */
+.ul-card {
+  background: var(--card);
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  padding: 24px;
+  box-shadow: var(--card-shadow);
+  animation: fade-in 0.3s ease forwards;
+}
+
+/* Header */
+.ul-header {
+  margin-bottom: 24px;
+}
+
+.ul-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--foreground);
+  margin: 0;
+}
+
+.ul-subtitle {
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+  margin: 0;
+}
+
+/* Table */
+.ul-table-wrapper {
+  overflow-x: auto;
+}
+
+.ul-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.ul-table th {
+  text-align: left;
+  padding: 12px 16px;
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+  border-bottom: 1px solid var(--border);
+  font-weight: 500;
+}
+
+.ul-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Table rows hover */
+.ul-row:hover {
+  background: var(--muted);
+}
+
+/* Text formatting */
+.ul-name {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+.ul-date {
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+}
+
+/* Empty row text */
+.ul-empty {
+  padding: 32px 0;
+  text-align: center;
+  color: var(--muted-foreground);
+  font-size: 0.875rem;
+}
+
+/* Badges */
+.ul-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 999px;
+}
+
+.ul-badge-approved {
+  background: rgba(var(--success-rgb), 0.1);
+  color: var(--success);
+}
+
+.ul-badge-pending {
+  background: rgba(var(--warning-rgb), 0.1);
+  color: var(--warning);
+}
+
+/* Animation */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

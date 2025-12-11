@@ -1,35 +1,59 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-function App() {
-  const [count, setCount] = useState(0)
+// 1. Layouts dan Rute Pelindung
+import { ProtectedRoute } from "./components/layout/ProtectedRoute";
+import { DashboardLayout } from "./components/layout/DashboardLayout";
+
+// 2. Import Komponen Halaman (dari folder dashboard)
+// Asumsi: Semua komponen ini adalah halaman utama, meskipun namanya agak spesifik.
+// Dalam praktik nyata, Anda mungkin memiliki folder 'pages' terpisah.
+
+import UpcomingLeave from "./components/dashboard/UpcomingLeave"; // Sudah ada
+import RecentActivity from "./components/dashboard/RecentActivity"; // Ditambahkan
+import EmployeeChart from "./components/dashboard/EmployeeChart"; // Ditambahkan
+import StatCard from "./components/dashboard/StatCard"; // Ditambahkan
+
+export default function App() {
+  // Fungsi pembantu untuk membungkus halaman dengan ProtectedRoute dan DashboardLayout
+  const wrapProtectedPage = (Component, title, subtitle) => (
+    <ProtectedRoute>
+      <DashboardLayout title={title} subtitle={subtitle}>
+        <Component />
+      </DashboardLayout>
+    </ProtectedRoute>
+  );
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <BrowserRouter>
+      <Routes>
+        
+        {/* --- RUTE DASHBOARD DENGAN PROTECTED LAYOUT --- */}
+        
+        {/* Rute Utama (Landing Page/Dashboard Default) */}
+        <Route 
+          path="/" 
+          element={wrapProtectedPage(UpcomingLeave, "Dashboard Utama", "Informasi ringkasan dan cuti mendatang")} 
+        />
 
-export default App
+        {/* Contoh Rute Lain (sesuaikan path dan komponen): */}
+        
+        <Route 
+          path="/activities" 
+          element={wrapProtectedPage(RecentActivity, "Aktivitas Terkini", "Lihat semua riwayat aktivitas karyawan")} 
+        />
+        
+        <Route 
+          path="/analytics" 
+          element={wrapProtectedPage(EmployeeChart, "Analisis Karyawan", "Visualisasi data demografi dan performa")} 
+        />
+
+        {/* Anda dapat menambahkan rute lain di sini (misalnya untuk Login, Settings, dll.) */}
+        
+        {/* Contoh Rute Tanpa Proteksi (misalnya halaman Login, nanti perlu ditambahkan)
+        <Route path="/login" element={<LoginPage />} />
+        */}
+
+      </Routes>
+    </BrowserRouter>
+  );
+}
