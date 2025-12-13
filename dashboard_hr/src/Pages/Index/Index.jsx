@@ -1,104 +1,43 @@
 // src/Pages/Index/Index.jsx
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './Index.css';
 import StatCard, { Users, UserPlus, CalendarOff, Clock } from '../../Components/Card/Card'; 
-
-
-// --- PLACEHOLDER HOOKS ---
-
-const useAuth = () => ({
-  user: {
-    user_metadata: { full_name: 'Faris Mubarok' },
-    email: 'faris.mubarok@example.com'
-  }
-});
-
-const useDashboardStats = () => ({
-  data: {
-    totalEmployees: 450,
-    newThisMonth: 12,
-    onLeave: 5,
-    pendingApprovals: 8
-  },
-  isLoading: false
-});
-
-// --- PLACEHOLDER COMPONENTS ---
-
-const EmployeeChart = () => (
-    <div className="chart-container dashboard-card">
-        <h3>Jumlah Karyawan Per Divisi</h3>
-        <p className="subtitle">Total karyawan di setiap departemen</p>
-        <div className="placeholder-content placeholder-chart">
-            <p>Belum ada data karyawan (Chart)</p>
-        </div>
-    </div>
-);
-
-const RecentActivity = () => {
-    const activities = [
-        { description: 'Karyawan baru bergabung - Ahmad Fauzi - Divisi IT', time: '5 menit lalu' },
-        { description: 'Pengajuan cuti disetujui - Siti Rahayu - 3 hari cuti', time: '1 jam lalu' },
-        { description: 'Dokumen kontrak diperbaharui - Budi Santoso - Perpanjangan kontrak', time: '2 jam lalu' },
-        { description: 'Evaluasi kinerja selesai - Divisi Marketing - Q4 2024', time: '3 jam lalu' },
-    ];
-
-    return (
-        <div className="activity-card dashboard-card">
-            <h3>Aktivitas Terbaru</h3>
-            <p className="subtitle">Update terkini dari sistem</p>
-            <div className="activity-list">
-                {activities.map((activity, index) => (
-                    <div key={index} className="activity-list-item">
-                        <div className="activity-description">
-                            {activity.description}
-                        </div>
-                        <span className="activity-time">{activity.time}</span>
-                    </div>
-                ))}
-            </div>
-        </div>
-    );
-};
-
-const UpcomingLeave = () => (
-    <div className="schedule-card dashboard-card">
-        <h3>Jadwal Cuti Mendatang</h3>
-        <p className="subtitle">Rencana cuti minggu ini</p>
-        
-        <table className="table-cuti">
-            <thead>
-                <tr>
-                    <th>Nama</th>
-                    <th>Tanggal</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td colSpan="3" className="empty-state">Tidak ada jadwal cuti mendatang</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-);
+import { fetchDashboardStats, fetchCuti, formatDate } from '../../utils/api';
 
 // --- KOMPONEN UTAMA INDEX ---
 
 const Index = () => {
-  const { user } = useAuth();
-  const { data: stats, isLoading } = useDashboardStats();
-
-  const mockStats = {
+  const [stats, setStats] = useState({
     totalEmployees: 0,
     newThisMonth: 0,
     onLeave: 0,
     pendingApprovals: 0
-  };
+  });
+  const [upcomingLeave, setUpcomingLeave] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const currentStats = isLoading ? mockStats : stats;
-  const userName = user?.user_metadata?.full_name || user?.email?.split("@")[0] || "Admin";
+  const userName = "Admin"; // Bisa diganti dengan data dari localStorage/session
+
+  useEffect(() => {
+    const loadData = async () => {
+      setIsLoading(true);
+      const dashboardStats = await fetchDashboardStats();
+      const cutiData = await fetchCuti();
+      
+      // Filter cuti yang akan datang (status disetujui dan tanggal >= hari ini)
+      const today = new Date();
+      const upcoming = cutiData
+        .filter(c => c.status === 'Disetujui' && new Date(c.tanggal_mulai) >= today)
+        .slice(0, 5);
+      
+      setStats(dashboardStats);
+      setUpcomingLeave(upcoming);
+      setIsLoading(false);
+    };
+    
+    loadData();
+  }, []);
 
   return (
     <div className="page-container">
@@ -113,38 +52,95 @@ const Index = () => {
         <div className="stats-grid">
           <StatCard
             title="Total Karyawan"
-            value={isLoading ? "..." : currentStats.totalEmployees}
+            value={isLoading ? "..." : stats.totalEmployees}
             icon={Users}
             variant="primary"
           />
           <StatCard
             title="Karyawan Baru Bulan Ini"
-            value={isLoading ? "..." : currentStats.newThisMonth}
+            value={isLoading ? "..." : stats.newThisMonth}
             icon={UserPlus}
             variant="success"
           />
           <StatCard
             title="Sedang Cuti"
-            value={isLoading ? "..." : currentStats.onLeave}
+            value={isLoading ? "..." : stats.onLeave}
             icon={CalendarOff}
             variant="info"
           />
           <StatCard
             title="Menunggu Persetujuan"
-            value={isLoading ? "..." : currentStats.pendingApprovals}
+            value={isLoading ? "..." : stats.pendingApprovals}
             icon={Clock}
             variant="warning"
           />
         </div>
 
         <div className="charts-row">
-          <div className="employee-chart-area">
-            <EmployeeChart />
+          <div className="chart-container dashboard-card">
+            <h3>Jumlah Karyawan Per Divisi</h3>
+            <p className="subtitle">Total karyawan di setiap departemen</p>
+            <div className="placeholder-content placeholder-chart">
+              <p>Belum ada data karyawan (Chart)</p>
+            </div>
           </div>
-          <RecentActivity />
+          <div className="activity-card dashboard-card">
+            <h3>Ringkasan</h3>
+            <p className="subtitle">Statistik sistem HR</p>
+            <div className="activity-list">
+              <div className="activity-list-item">
+                <div className="activity-description">Total Karyawan Aktif</div>
+                <span className="activity-time">{stats.totalEmployees} orang</span>
+              </div>
+              <div className="activity-list-item">
+                <div className="activity-description">Pengajuan Cuti Pending</div>
+                <span className="activity-time">{stats.pendingApprovals} pengajuan</span>
+              </div>
+              <div className="activity-list-item">
+                <div className="activity-description">Karyawan Sedang Cuti</div>
+                <span className="activity-time">{stats.onLeave} orang</span>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <UpcomingLeave />
+        <div className="schedule-card dashboard-card">
+          <h3>Jadwal Cuti Mendatang</h3>
+          <p className="subtitle">Rencana cuti yang sudah disetujui</p>
+          
+          <table className="table-cuti">
+            <thead>
+              <tr>
+                <th>Nama</th>
+                <th>Tanggal Mulai</th>
+                <th>Tanggal Selesai</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {isLoading ? (
+                <tr>
+                  <td colSpan="4" className="empty-state">Loading...</td>
+                </tr>
+              ) : upcomingLeave.length > 0 ? (
+                upcomingLeave.map((cuti) => (
+                  <tr key={cuti.id}>
+                    <td>{cuti.nama_lengkap}</td>
+                    <td>{formatDate(cuti.tanggal_mulai)}</td>
+                    <td>{formatDate(cuti.tanggal_selesai)}</td>
+                    <td>
+                      <span className="status-badge status-disetujui">{cuti.status}</span>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="4" className="empty-state">Tidak ada jadwal cuti mendatang</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
