@@ -1,37 +1,33 @@
 // src/Pages/Gaji/Gaji.jsx
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Gaji.css'; 
-
-// Fungsi Pembantu untuk format mata uang
-const formatRupiah = (number) => {
-  return new Intl.NumberFormat('id-ID', {
-    style: 'currency',
-    currency: 'IDR',
-    minimumFractionDigits: 0,
-  }).format(number);
-};
-
-// Data Gaji Simulasi
-const MOCK_SALARIES = [
-  { id: 1, nama: 'Ahmad Fauzi', divisi: 'IT', periode: 'Des 2024', gajiPokok: 6500000, tunjangan: 1500000, potongan: 250000 },
-  { id: 2, nama: 'Siti Rahayu', divisi: 'HRD', periode: 'Des 2024', gajiPokok: 5000000, tunjangan: 1000000, potongan: 200000 },
-  { id: 3, nama: 'Budi Santoso', divisi: 'Marketing', periode: 'Nov 2024', gajiPokok: 7200000, tunjangan: 2000000, potongan: 300000 },
-  { id: 4, nama: 'Candra Wijaya', divisi: 'IT', periode: 'Des 2024', gajiPokok: 6000000, tunjangan: 1200000, potongan: 200000 },
-];
+import { fetchGaji, deleteGaji, formatGajiId, formatRupiah, formatDate } from '../../utils/api';
 
 const Gaji = () => {
-  const [salaries, setSalaries] = useState(MOCK_SALARIES);
+  const [salaries, setSalaries] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [loading, setLoading] = useState(true);
+
+  // Fetch data gaji
+  const loadGaji = async () => {
+    setLoading(true);
+    const data = await fetchGaji();
+    setSalaries(data);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    loadGaji();
+  }, []);
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
   };
 
   const filteredSalaries = salaries.filter(sal =>
-    sal.nama.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    sal.divisi.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    sal.periode.toLowerCase().includes(searchTerm.toLowerCase())
+    sal.nama_lengkap?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    sal.status_pembayaran?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -50,41 +46,50 @@ const Gaji = () => {
       <div className="gaji-controls">
         <input 
           type="text" 
-          placeholder="Cari nama, divisi, atau periode..."
+          placeholder="Cari nama atau status..."
           value={searchTerm}
           onChange={handleSearch}
           className="search-input"
         />
-        {/* Dropdown filter periode gaji bisa ditambahkan di sini */}
       </div>
 
       <div className="gaji-table-container dashboard-card">
         <table className="gaji-table">
           <thead>
             <tr>
+              <th>ID Gaji</th>
               <th>Nama Karyawan</th>
-              <th>Divisi</th>
-              <th>Periode</th>
+              <th>Jabatan</th>
               <th>Gaji Pokok</th>
               <th>Tunjangan</th>
-              <th>Potongan</th>
-              <th>Gaji Bersih</th>
+              <th>Bonus</th>
+              <th>Total</th>
+              <th>Status</th>
               <th>Aksi</th>
             </tr>
           </thead>
           <tbody>
-            {filteredSalaries.length > 0 ? (
+            {loading ? (
+              <tr>
+                <td colSpan="9" className="empty-state">Loading...</td>
+              </tr>
+            ) : filteredSalaries.length > 0 ? (
               filteredSalaries.map((sal) => {
-                const gajiBersih = sal.gajiPokok + sal.tunjangan - sal.potongan;
+                const total = (sal.gaji_pokok || 0) + (sal.tunjangan || 0) + (sal.bonus || 0);
                 return (
                   <tr key={sal.id}>
-                    <td>{sal.nama}</td>
-                    <td>{sal.divisi}</td>
-                    <td>{sal.periode}</td>
-                    <td>{formatRupiah(sal.gajiPokok)}</td>
+                    <td>{formatGajiId(sal.id)}</td>
+                    <td>{sal.nama_lengkap || '-'}</td>
+                    <td>{sal.jabatan || '-'}</td>
+                    <td>{formatRupiah(sal.gaji_pokok)}</td>
                     <td>{formatRupiah(sal.tunjangan)}</td>
-                    <td className="text-danger">{formatRupiah(sal.potongan)}</td>
-                    <td className="text-success font-bold">{formatRupiah(gajiBersih)}</td>
+                    <td>{formatRupiah(sal.bonus)}</td>
+                    <td className="text-success font-bold">{formatRupiah(total)}</td>
+                    <td>
+                      <span className={`status-badge status-${sal.status_pembayaran?.toLowerCase()}`}>
+                        {sal.status_pembayaran}
+                      </span>
+                    </td>
                     <td>
                       <button className="btn-action view">Detail Slip</button>
                     </td>
@@ -93,7 +98,7 @@ const Gaji = () => {
               })
             ) : (
               <tr>
-                <td colSpan="8" className="empty-state">Data penggajian tidak ditemukan.</td>
+                <td colSpan="9" className="empty-state">Data penggajian tidak ditemukan.</td>
               </tr>
             )}
           </tbody>

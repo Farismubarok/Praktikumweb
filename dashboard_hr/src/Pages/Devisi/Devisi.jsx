@@ -1,28 +1,39 @@
 // src/Pages/Devisi/Devisi.jsx
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Devisi.css'; 
-// Asumsi DashboardLayout/Layout Wrapper sudah di-handle di App.jsx atau Index.css
-
-// Data Divisi Simulasi
-const MOCK_DIVISIONS = [
-  { id: 101, nama: 'IT (Information Technology)', employees: 45, head: 'Bambang Sudiro' },
-  { id: 102, nama: 'HRD (Human Resources Development)', employees: 10, head: 'Siti Rahayu' },
-  { id: 103, nama: 'Marketing', employees: 25, head: 'Budi Santoso' },
-  { id: 104, nama: 'Finance', employees: 15, head: 'Dewi Lestari' },
-  { id: 105, nama: 'Operational', employees: 50, head: 'Ahmad Wijaya' },
-];
+import { fetchDivisi, deleteDivisi, formatDivisiId, formatRupiah } from '../../utils/api';
 
 const Devisi = () => {
-  const [divisions, setDivisions] = useState(MOCK_DIVISIONS);
+  const [divisions, setDivisions] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [loading, setLoading] = useState(true);
+
+  // Fetch data divisi
+  const loadDivisi = async () => {
+    setLoading(true);
+    const data = await fetchDivisi();
+    setDivisions(data);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    loadDivisi();
+  }, []);
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
   };
 
+  const handleDelete = async (id) => {
+    if (window.confirm('Yakin ingin menghapus divisi ini?')) {
+      await deleteDivisi(id);
+      loadDivisi();
+    }
+  };
+
   const filteredDivisions = divisions.filter(div =>
-    div.nama.toLowerCase().includes(searchTerm.toLowerCase())
+    div.nama_divisi?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -55,21 +66,25 @@ const Devisi = () => {
               <th>ID</th>
               <th>Nama Divisi</th>
               <th>Kepala Divisi</th>
-              <th>Jml. Karyawan</th>
+              <th>Anggaran</th>
               <th>Aksi</th>
             </tr>
           </thead>
           <tbody>
-            {filteredDivisions.length > 0 ? (
+            {loading ? (
+              <tr>
+                <td colSpan="5" className="empty-state">Loading...</td>
+              </tr>
+            ) : filteredDivisions.length > 0 ? (
               filteredDivisions.map((div) => (
                 <tr key={div.id}>
-                  <td>{div.id}</td>
-                  <td>{div.nama}</td>
-                  <td>{div.head}</td>
-                  <td>{div.employees}</td>
+                  <td>{formatDivisiId(div.id)}</td>
+                  <td>{div.nama_divisi}</td>
+                  <td>{div.nama_kepala || '-'}</td>
+                  <td>{formatRupiah(div.anggaran)}</td>
                   <td>
                     <button className="btn-action edit">Edit</button>
-                    <button className="btn-action delete">Hapus</button>
+                    <button className="btn-action delete" onClick={() => handleDelete(div.id)}>Hapus</button>
                   </td>
                 </tr>
               ))
