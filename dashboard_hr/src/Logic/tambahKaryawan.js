@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { toast } from 'sonner';
 
-export const tambahKaryawan = (onClose, onSuccess) => {
+export const useAddEmployee = (onClose, onSuccess) => {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
 
