@@ -83,3 +83,15 @@ git add .
 git commit -m "update"
 git push
 
+# Backend
+
+masuk ke folder backend
+cd dashboard_hr\Backend
+1. pnpm init
+
+2. pnpm add express dotenv cors mongoose
+
+3. pnpm add -D nodemon
+
+# Run Backend
+cd dashboard_hr\Backend\pnpm run dev
