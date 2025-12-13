@@ -12,8 +12,8 @@ const router = express.Router();
 
 router.post('/', createGaji);
 router.get('/', getAllGaji);
-router.get('/:id', getGajiById);
 router.get('/karyawan/:id_karyawan', getGajiByKaryawanId);
+router.get('/:id', getGajiById);
 router.put('/:id', updateGaji);
 router.delete('/:id', deleteGaji);
 

@@ -107,6 +107,19 @@ export const createGaji = async (data) => {
   return response.json();
 };
 
+export const fetchGajiByKaryawanId = async (id_karyawan) => {
+  try {
+    const response = await fetch(`${API_BASE}/gaji/karyawan/${id_karyawan}`);
+    if (!response.ok) throw new Error('Gagal fetch data gaji karyawan');
+    const data = await response.json();
+    // Return data gaji terbaru (yang pertama karena sudah di-order DESC)
+    return data.length > 0 ? data[0] : null;
+  } catch (error) {
+    console.error('Error fetching gaji by karyawan:', error);
+    return null;
+  }
+};
+
 export const updateGaji = async (id, data) => {
   const response = await fetch(`${API_BASE}/gaji/${id}`, {
     method: 'PUT',

@@ -1,7 +1,7 @@
 // src/Forms/EditGaji/EditGaji.jsx
 import React, { useState, useEffect } from 'react';
 import './EditGaji.css';
-import { updateGaji } from '../../utils/api';
+import { updateGaji, createGaji } from '../../utils/api';
 import { toast } from 'sonner';
 
 const EditGaji = ({ selectedKaryawan, gajiData, onClose, onSuccess, onChangeKaryawan }) => {
@@ -9,7 +9,6 @@ const EditGaji = ({ selectedKaryawan, gajiData, onClose, onSuccess, onChangeKary
     gaji_pokok: '',
     tunjangan: '',
     bonus: '',
-    potongan: '',
     periode: '',
     status_pembayaran: 'Pending',
   });
@@ -27,7 +26,6 @@ const EditGaji = ({ selectedKaryawan, gajiData, onClose, onSuccess, onChangeKary
         gaji_pokok: gajiData.gaji_pokok || '',
         tunjangan: gajiData.tunjangan || '',
         bonus: gajiData.bonus || '',
-        potongan: gajiData.potongan || '',
         periode: gajiData.periode || monthYear,
         status_pembayaran: gajiData.status_pembayaran || 'Pending',
       });
@@ -44,7 +42,7 @@ const EditGaji = ({ selectedKaryawan, gajiData, onClose, onSuccess, onChangeKary
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: ['gaji_pokok', 'tunjangan', 'bonus', 'potongan'].includes(name) 
+      [name]: ['gaji_pokok', 'tunjangan', 'bonus'].includes(name) 
         ? parseInt(value) || 0 
         : value
     }));
@@ -58,21 +56,21 @@ const EditGaji = ({ selectedKaryawan, gajiData, onClose, onSuccess, onChangeKary
       return;
     }
 
-    if (formData.gaji_pokok < 0 || formData.tunjangan < 0 || formData.bonus < 0 || formData.potongan < 0) {
+    if (formData.gaji_pokok < 0 || formData.tunjangan < 0 || formData.bonus < 0) {
       toast.error('Nilai gaji tidak boleh negatif');
       return;
     }
 
     setLoading(true);
     try {
+      // Hanya kirim field yang ada di database
       const dataToSend = {
         id_karyawan: selectedKaryawan.id,
-        gaji_pokok: formData.gaji_pokok,
-        tunjangan: formData.tunjangan,
-        bonus: formData.bonus,
-        potongan: formData.potongan,
-        periode: formData.periode,
+        gaji_pokok: formData.gaji_pokok || 0,
+        tunjangan: formData.tunjangan || 0,
+        bonus: formData.bonus || 0,
         status_pembayaran: formData.status_pembayaran,
+        tanggal_pembayaran: formData.status_pembayaran === 'Dibayar' ? new Date().toISOString().split('T')[0] : null,
       };
 
       if (gajiData && gajiData.id) {
@@ -80,8 +78,8 @@ const EditGaji = ({ selectedKaryawan, gajiData, onClose, onSuccess, onChangeKary
         await updateGaji(gajiData.id, dataToSend);
         toast.success('Data gaji berhasil diperbarui');
       } else {
-        // Create new (jika createGaji ada)
-        // await createGaji(dataToSend);
+        // Create new
+        await createGaji(dataToSend);
         toast.success('Data gaji berhasil disimpan');
       }
       
@@ -95,7 +93,7 @@ const EditGaji = ({ selectedKaryawan, gajiData, onClose, onSuccess, onChangeKary
     }
   };
 
-  const total = (formData.gaji_pokok || 0) + (formData.tunjangan || 0) + (formData.bonus || 0) - (formData.potongan || 0);
+  const total = (formData.gaji_pokok || 0) + (formData.tunjangan || 0) + (formData.bonus || 0);
 
   return (
     <form onSubmit={handleSubmit} className="edit-gaji-form">
@@ -147,32 +145,17 @@ const EditGaji = ({ selectedKaryawan, gajiData, onClose, onSuccess, onChangeKary
         </div>
       </div>
 
-      <div className="form-row-2col">
-        <div className="form-group">
-          <label htmlFor="bonus">Bonus</label>
-          <input
-            type="number"
-            id="bonus"
-            name="bonus"
-            value={formData.bonus}
-            onChange={handleChange}
-            placeholder="Rp 0"
-            min="0"
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="potongan">Potongan</label>
-          <input
-            type="number"
-            id="potongan"
-            name="potongan"
-            value={formData.potongan}
-            onChange={handleChange}
-            placeholder="Rp 0"
-            min="0"
-          />
-        </div>
+      <div className="form-group">
+        <label htmlFor="bonus">Bonus</label>
+        <input
+          type="number"
+          id="bonus"
+          name="bonus"
+          value={formData.bonus}
+          onChange={handleChange}
+          placeholder="Rp 0"
+          min="0"
+        />
       </div>
 
       {/* Periode & Status */}
@@ -200,8 +183,8 @@ const EditGaji = ({ selectedKaryawan, gajiData, onClose, onSuccess, onChangeKary
             required
           >
             <option value="Pending">Pending</option>
-            <option value="Sudah Dibayar">Sudah Dibayar</option>
-            <option value="Tunda">Tunda</option>
+            <option value="Proses">Proses</option>
+            <option value="Dibayar">Dibayar</option>
           </select>
         </div>
       </div>

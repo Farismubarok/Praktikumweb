@@ -14,9 +14,19 @@ export const createDivisi = async (req, res) => {
       [nama_divisi, deskripsi, anggaran, id_kepala_divisi]
     );
 
+    const newDivisiId = result.insertId;
+
+    // Auto-update karyawan's id_divisi jika jadi kepala divisi
+    if (id_kepala_divisi) {
+      await db.query(
+        `UPDATE tabel_karyawan SET id_divisi = ? WHERE id = ?`,
+        [newDivisiId, id_kepala_divisi]
+      );
+    }
+
     res.status(201).json({ 
       message: 'Divisi berhasil ditambahkan!', 
-      id: result.insertId 
+      id: newDivisiId 
     });
   } catch (error) {
     console.error("Error insert divisi:", error);
@@ -76,6 +86,14 @@ export const updateDivisi = async (req, res) => {
 
     if (result.affectedRows === 0) {
       return res.status(404).json({ message: 'Divisi tidak ditemukan' });
+    }
+
+    // Auto-update karyawan's id_divisi jika jadi kepala divisi
+    if (id_kepala_divisi) {
+      await db.query(
+        `UPDATE tabel_karyawan SET id_divisi = ? WHERE id = ?`,
+        [id, id_kepala_divisi]
+      );
     }
 
     res.status(200).json({ message: 'Divisi berhasil diupdate!' });

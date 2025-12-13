@@ -14,25 +14,34 @@
 
 .form-divisi .input-field,
 .tambah-divisi-form .form-group input,
-.tambah-divisi-form .form-group select {
+.tambah-divisi-form .form-group select,
+.tambah-divisi-form .form-group textarea {
     width: 100%;
     padding: 10px 12px;
     border: 1px solid #d1d5db;
     border-radius: 6px;
     font-size: 14px;
     transition: border-color 0.2s;
+    font-family: inherit;
+}
+
+.tambah-divisi-form .form-group textarea {
+    resize: vertical;
+    min-height: 80px;
 }
 
 .form-divisi .input-field:focus,
 .tambah-divisi-form .form-group input:focus,
-.tambah-divisi-form .form-group select:focus {
+.tambah-divisi-form .form-group select:focus,
+.tambah-divisi-form .form-group textarea:focus {
     outline: none;
     border-color: #1e40af;
     box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
 }
 
 .form-divisi .input-field::placeholder,
-.tambah-divisi-form .form-group input::placeholder {
+.tambah-divisi-form .form-group input::placeholder,
+.tambah-divisi-form .form-group textarea::placeholder {
     color: #999;
 }
 

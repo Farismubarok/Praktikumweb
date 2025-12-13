@@ -7,7 +7,8 @@ import { toast } from 'sonner';
 const TambahDivisi = ({ divisiData = null, onClose, onSuccess }) => {
   const [formData, setFormData] = useState({
     nama_divisi: '',
-    id_kepala: '',
+    deskripsi: '',
+    id_kepala_divisi: '',
     anggaran: '',
   });
   
@@ -18,8 +19,9 @@ const TambahDivisi = ({ divisiData = null, onClose, onSuccess }) => {
     loadKaryawan();
     if (divisiData) {
       setFormData({
-        nama_divisi: divisiData.nama_divisi,
-        id_kepala: divisiData.id_kepala || '',
+        nama_divisi: divisiData.nama_divisi || '',
+        deskripsi: divisiData.deskripsi || '',
+        id_kepala_divisi: divisiData.id_kepala_divisi || '',
         anggaran: divisiData.anggaran || '',
       });
     }
@@ -87,11 +89,23 @@ const TambahDivisi = ({ divisiData = null, onClose, onSuccess }) => {
       </div>
 
       <div className="form-group">
-        <label htmlFor="id_kepala">Kepala Divisi</label>
+        <label htmlFor="deskripsi">Deskripsi</label>
+        <textarea
+          id="deskripsi"
+          name="deskripsi"
+          value={formData.deskripsi}
+          onChange={handleChange}
+          placeholder="Deskripsi singkat tentang divisi ini..."
+          rows="3"
+        />
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="id_kepala_divisi">Kepala Divisi</label>
         <select
-          id="id_kepala"
-          name="id_kepala"
-          value={formData.id_kepala}
+          id="id_kepala_divisi"
+          name="id_kepala_divisi"
+          value={formData.id_kepala_divisi}
           onChange={handleChange}
         >
           <option value="">Pilih Kepala Divisi</option>

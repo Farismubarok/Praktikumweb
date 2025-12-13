@@ -92,6 +92,7 @@ const Devisi = () => {
             <tr>
               <th>ID</th>
               <th>Nama Divisi</th>
+              <th>Deskripsi</th>
               <th>Kepala Divisi</th>
               <th>Anggaran</th>
               <th>Aksi</th>
@@ -100,13 +101,14 @@ const Devisi = () => {
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan="5" className="empty-state">Loading...</td>
+                <td colSpan="6" className="empty-state">Loading...</td>
               </tr>
             ) : filteredDivisions.length > 0 ? (
               filteredDivisions.map((div) => (
                 <tr key={div.id}>
                   <td>{formatDivisiId(div.id)}</td>
                   <td>{div.nama_divisi}</td>
+                  <td>{div.deskripsi || '-'}</td>
                   <td>{div.nama_kepala || '-'}</td>
                   <td>{formatRupiah(div.anggaran)}</td>
                   <td>
@@ -127,7 +129,7 @@ const Devisi = () => {
               ))
             ) : (
               <tr>
-                <td colSpan="5" className="empty-state">Data divisi tidak ditemukan.</td>
+                <td colSpan="6" className="empty-state">Data divisi tidak ditemukan.</td>
               </tr>
             )}
           </tbody>

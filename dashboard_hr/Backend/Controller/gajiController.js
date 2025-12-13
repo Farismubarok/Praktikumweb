@@ -28,9 +28,10 @@ export const createGaji = async (req, res) => {
 export const getAllGaji = async (req, res) => {
   try {
     const [rows] = await db.query(`
-      SELECT g.*, k.nama_lengkap, k.jabatan
+      SELECT g.*, k.nama_lengkap, k.jabatan, d.nama_divisi
       FROM tabel_gaji g
       LEFT JOIN tabel_karyawan k ON g.id_karyawan = k.id
+      LEFT JOIN tabel_divisi d ON k.id_divisi = d.id
       ORDER BY g.id DESC
     `);
     res.status(200).json(rows);
@@ -66,9 +67,10 @@ export const getGajiByKaryawanId = async (req, res) => {
   const { id_karyawan } = req.params;
   try {
     const [rows] = await db.query(`
-      SELECT g.*, k.nama_lengkap, k.jabatan
+      SELECT g.*, k.nama_lengkap, k.jabatan, d.nama_divisi
       FROM tabel_gaji g
       LEFT JOIN tabel_karyawan k ON g.id_karyawan = k.id
+      LEFT JOIN tabel_divisi d ON k.id_divisi = d.id
       WHERE g.id_karyawan = ?
       ORDER BY g.id DESC
     `, [id_karyawan]);

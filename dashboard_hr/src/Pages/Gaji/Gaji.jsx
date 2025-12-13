@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import './Gaji.css'; 
-import { fetchGaji, deleteGaji, formatGajiId, formatRupiah, formatDate } from '../../utils/api';
+import { fetchGaji, deleteGaji, fetchGajiByKaryawanId, formatGajiId, formatRupiah, formatDate } from '../../utils/api';
 import { toast } from 'sonner';
 import Model from '../../Components/model/model';
 import SelectKaryawan from '../../Forms/SelectKaryawan/SelectKaryawan';
@@ -63,9 +63,11 @@ const Gaji = () => {
     setIsModalOpen(true);
   };
 
-  const handleSelectKaryawan = (emp) => {
+  const handleSelectKaryawan = async (emp) => {
     setSelectedKaryawan(emp);
-    setEditingGaji(null);
+    // Fetch data gaji existing untuk karyawan ini
+    const existingGaji = await fetchGajiByKaryawanId(emp.id);
+    setEditingGaji(existingGaji);
     setModalStep(2);
   };
 
@@ -145,9 +147,9 @@ const Gaji = () => {
           <span className="filter-icon">⚙️</span>
           <select value={statusFilter} onChange={handleStatusFilter} className="filter-select">
             <option>Semua Status</option>
-            <option>Sudah Dibayar</option>
+            <option>Dibayar</option>
+            <option>Proses</option>
             <option>Pending</option>
-            <option>Tunda</option>
           </select>
           <span className="filter-info">Menampilkan {filteredSalaries.length} dari {salaries.length} data</span>
         </div>
@@ -165,13 +167,12 @@ const Gaji = () => {
               <th>Bonus</th>
               <th>Total</th>
               <th>Status</th>
-              <th>Aksi</th>
             </tr>
           </thead>
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan="9" className="empty-state">Loading...</td>
+                <td colSpan="8" className="empty-state">Loading...</td>
               </tr>
             ) : filteredSalaries.length > 0 ? (
               filteredSalaries.map((sal) => {
@@ -195,21 +196,12 @@ const Gaji = () => {
                         {sal.status_pembayaran}
                       </span>
                     </td>
-                    <td className="action-cell">
-                      <button 
-                        className="btn-edit-icon"
-                        onClick={() => handleEditGaji(sal)}
-                        title="Edit"
-                      >
-                        ✏️
-                      </button>
-                    </td>
                   </tr>
                 );
               })
             ) : (
               <tr>
-                <td colSpan="9" className="empty-state">Data penggajian tidak ditemukan.</td>
+                <td colSpan="8" className="empty-state">Data penggajian tidak ditemukan.</td>
               </tr>
             )}
           </tbody>
@@ -238,10 +230,12 @@ const Gaji = () => {
         ) : (
           <EditGaji 
             selectedKaryawan={selectedKaryawan}
+            gajiData={editingGaji}
             onClose={() => {
               setIsModalOpen(false);
               setModalStep(1);
               setSelectedKaryawan(null);
+              setEditingGaji(null);
             }}
             onSuccess={loadGaji}
             onChangeKaryawan={handleChangeKaryawan}
