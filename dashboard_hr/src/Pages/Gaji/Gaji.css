@@ -13,7 +13,6 @@
 /* --- Layout Header & Controls --- */
 
 .gaji-page-wrapper {
-    /* Asumsi padding dari main-content */
     padding: 0; 
 }
 
@@ -26,12 +25,79 @@
     border-bottom: 1px solid var(--color-border);
 }
 
+.page-header h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+    color: #1f2937;
+}
+
 .page-subtitle {
     margin: 0;
     color: var(--color-text-secondary);
     font-size: 0.9rem;
 }
 
+/* --- Stat Cards --- */
+.stats-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s;
+}
+
+.stat-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.stat-icon {
+    font-size: 28px;
+    line-height: 1;
+}
+
+.stat-label {
+    margin: 0;
+    font-size: 13px;
+    color: #6b7280;
+    font-weight: 500;
+}
+
+.stat-value {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.stat-card.total-payroll {
+    border-left: 4px solid #38bdf8;
+}
+
+.stat-card.sudah-dibayar {
+    border-left: 4px solid #10b981;
+}
+
+.stat-card.pending {
+    border-left: 4px solid #f59e0b;
+}
+
+.stat-card.rata-rata {
+    border-left: 4px solid #a78bfa;
+}
+
+/* --- Controls & Filters --- */
 .gaji-controls {
     margin-bottom: 1.5rem;
     display: flex;
@@ -39,11 +105,40 @@
     align-items: center;
 }
 
-.gaji-controls .search-input {
-    padding: 0.5rem 1rem;
+.filter-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 1rem;
+    background: white;
     border-radius: 6px;
-    border: 1px solid var(--color-border);
-    min-width: 300px;
+    border: 1px solid #e5e7eb;
+    width: 100%;
+}
+
+.filter-icon {
+    font-size: 18px;
+}
+
+.filter-select {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    background: white;
+    min-width: 150px;
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: #38bdf8;
+}
+
+.filter-info {
+    margin-left: auto;
+    font-size: 13px;
+    color: #6b7280;
 }
 
 /* Button */
@@ -58,8 +153,8 @@
     transition: background-color 0.2s;
 }
 
-.btn-primary:hover {
-    background-color: #0ea5e9; 
+.btn-primary-gaji:hover {
+    background-color: #1e47c4; 
 }
 
 /* Card Wrapper */
@@ -86,6 +181,7 @@
     border-bottom: 2px solid var(--color-border);
     color: #4b5563;
     font-weight: 600;
+    font-size: 13px;
 }
 
 .gaji-table td {
@@ -96,6 +192,112 @@
 
 .gaji-table tbody tr:hover {
     background-color: #f9fafb;
+}
+
+.employee-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.employee-cell strong {
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.emp-code {
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+.total-cell {
+    font-weight: 600;
+    color: #059669;
+}
+
+.action-cell {
+    text-align: center;
+}
+
+.btn-edit-icon {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 0.25rem;
+    transition: transform 0.2s;
+}
+
+.btn-edit-icon:hover {
+    transform: scale(1.2);
+}
+
+/* Status Badge */
+.status-badge {
+    display: inline-block;
+    padding: 0.375rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status-badge.status-sudah-dibayar {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+.status-badge.status-pending {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.status-badge.status-proses {
+    background-color: #dbeafe;
+    color: #0c2d6b;
+}
+
+.status-badge.status-tunda {
+    background-color: #fee2e2;
+    color: #7f1d1d;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    color: #9ca3af;
+    padding: 2rem 1rem;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .stats-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .stats-container {
+        grid-template-columns: 1fr;
+    }
+
+    .filter-section {
+        flex-wrap: wrap;
+    }
+
+    .filter-info {
+        margin-left: 0;
+        width: 100%;
+        margin-top: 0.5rem;
+    }
+
+    .gaji-table {
+        font-size: 0.85rem;
+    }
+
+    .gaji-table td,
+    .gaji-table th {
+        padding: 0.75rem 0.5rem;
+    }
 }
 
 .empty-state {
