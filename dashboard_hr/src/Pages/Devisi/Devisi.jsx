@@ -3,18 +3,29 @@
 import React, { useState, useEffect } from 'react';
 import './Devisi.css'; 
 import { fetchDivisi, deleteDivisi, formatDivisiId, formatRupiah } from '../../utils/api';
+import { toast } from 'sonner';
+import Model from '../../Components/model/model';
+import TambahDivisi from '../../Forms/TambahDivisi/TambahDivisi';
 
 const Devisi = () => {
   const [divisions, setDivisions] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingDivisi, setEditingDivisi] = useState(null);
 
   // Fetch data divisi
   const loadDivisi = async () => {
     setLoading(true);
-    const data = await fetchDivisi();
-    setDivisions(data);
-    setLoading(false);
+    try {
+      const data = await fetchDivisi();
+      setDivisions(data);
+    } catch (error) {
+      toast.error('Gagal memuat data divisi');
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -25,10 +36,26 @@ const Devisi = () => {
     setSearchTerm(event.target.value);
   };
 
+  const handleOpenModalAdd = () => {
+    setEditingDivisi(null);
+    setIsModalOpen(true);
+  };
+
+  const handleOpenModalEdit = (divisi) => {
+    setEditingDivisi(divisi);
+    setIsModalOpen(true);
+  };
+
   const handleDelete = async (id) => {
     if (window.confirm('Yakin ingin menghapus divisi ini?')) {
-      await deleteDivisi(id);
-      loadDivisi();
+      try {
+        await deleteDivisi(id);
+        toast.success('Divisi berhasil dihapus');
+        loadDivisi();
+      } catch (error) {
+        toast.error('Gagal menghapus divisi');
+        console.error(error);
+      }
     }
   };
 
@@ -44,7 +71,7 @@ const Devisi = () => {
             <h1>Data Divisi</h1>
             <p className="page-subtitle">Kelola daftar semua divisi dan penanggung jawab di perusahaan.</p>
         </div>
-        <button className="btn-primary-divisi">
+        <button className="btn-primary-divisi" onClick={handleOpenModalAdd}>
           + Tambah Divisi
         </button>
       </header>
@@ -83,8 +110,18 @@ const Devisi = () => {
                   <td>{div.nama_kepala || '-'}</td>
                   <td>{formatRupiah(div.anggaran)}</td>
                   <td>
-                    <button className="btn-action edit">Edit</button>
-                    <button className="btn-action delete" onClick={() => handleDelete(div.id)}>Hapus</button>
+                    <button 
+                      className="btn-action edit" 
+                      onClick={() => handleOpenModalEdit(div)}
+                    >
+                      Edit
+                    </button>
+                    <button 
+                      className="btn-action delete" 
+                      onClick={() => handleDelete(div.id)}
+                    >
+                      Hapus
+                    </button>
                   </td>
                 </tr>
               ))
@@ -96,6 +133,24 @@ const Devisi = () => {
           </tbody>
         </table>
       </div>
+
+      <Model 
+        isOpen={isModalOpen} 
+        onClose={() => {
+          setIsModalOpen(false);
+          setEditingDivisi(null);
+        }} 
+        title={editingDivisi ? 'Edit Divisi' : 'Tambah Divisi Baru'}
+      >
+        <TambahDivisi 
+          divisiData={editingDivisi}
+          onClose={() => {
+            setIsModalOpen(false);
+            setEditingDivisi(null);
+          }} 
+          onSuccess={loadDivisi}
+        />
+      </Model>
       
     </div>
   );
