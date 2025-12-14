@@ -22,9 +22,14 @@ const Sidebar = () => {
   return (
     <aside className="sidebar_og">
       <div className="sidebar-header_og">
+        <img 
+            src="/logo.svg" 
+            alt="Logo HRIS System" 
+            className="sidebar-logo" 
+        />
         <div className="logo-text">
-          <h2>HRIS System</h2>
-          <span>Manajemen Karyawan</span>
+            <h2>HRIS System</h2>
+            <span>Manajemen Karyawan</span>
         </div>
       </div>
       
