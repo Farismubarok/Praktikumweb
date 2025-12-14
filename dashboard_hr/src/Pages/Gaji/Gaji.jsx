@@ -1,8 +1,8 @@
-// src/Pages/Gaji/Gaji.jsx
+// Bagian: Komponen Gaji
 
 import React, { useState, useEffect } from 'react';
 import './Gaji.css'; 
-import { fetchGaji, deleteGaji, fetchGajiByKaryawanId, formatGajiId, formatRupiah, formatDate } from '../../utils/api';
+import { fetchGaji, deleteGaji, fetchGajiByKaryawanId, formatGajiId, formatRupiah } from '../../utils/api';
 import { toast } from 'sonner';
 import Model from '../../Components/model/model';
 import SelectKaryawan from '../../Forms/SelectKaryawan/SelectKaryawan';
@@ -18,7 +18,7 @@ const Gaji = () => {
   const [selectedKaryawan, setSelectedKaryawan] = useState(null);
   const [editingGaji, setEditingGaji] = useState(null);
 
-  // Fetch data gaji
+  // Bagian: Fetch Data Gaji
   const loadGaji = async () => {
     setLoading(true);
     try {
@@ -51,7 +51,7 @@ const Gaji = () => {
     setIsModalOpen(true);
   };
 
-  // Buka langsung ke edit jika ada karyawan/gaji yang dipilih
+  // Bagian: Auto Open Edit
   const handleEditGaji = (sal) => {
     setSelectedKaryawan({
       id: sal.id_karyawan,
@@ -65,7 +65,7 @@ const Gaji = () => {
 
   const handleSelectKaryawan = async (emp) => {
     setSelectedKaryawan(emp);
-    // Fetch data gaji existing untuk karyawan ini
+    // Bagian: Fetch Gaji Existing
     const existingGaji = await fetchGajiByKaryawanId(emp.id);
     setEditingGaji(existingGaji);
     setModalStep(2);
@@ -89,14 +89,14 @@ const Gaji = () => {
     }
   };
 
-  // Filter by status
+  // Bagian: Filter Status
   const filteredSalaries = salaries.filter(sal => {
     const matchSearch = sal.nama_lengkap?.toLowerCase().includes(searchTerm.toLowerCase());
     const matchStatus = statusFilter === 'Semua Status' || sal.status_pembayaran === statusFilter;
     return matchSearch && matchStatus;
   });
 
-  // Calculate statistics
+  // Bagian: Kalkulasi Statistik
   const totalPayroll = salaries.reduce((sum, sal) => sum + (sal.gaji_pokok + sal.tunjangan + sal.bonus), 0);
   const sudahDibayar = salaries.filter(sal => sal.status_pembayaran === 'Dibayar').length;
   const pending = salaries.filter(sal => sal.status_pembayaran === 'Pending').length;
@@ -143,6 +143,13 @@ const Gaji = () => {
       </div>
 
       <div className="gaji-controls">
+        <input
+          type="text"
+          placeholder="Cari karyawan..."
+          value={searchTerm}
+          onChange={handleSearch}
+          className="search-input"
+        />
         <div className="filter-section">
           <span className="filter-icon">⚙️</span>
           <select value={statusFilter} onChange={handleStatusFilter} className="filter-select">
@@ -204,6 +211,13 @@ const Gaji = () => {
                         title="Edit"
                       >
                         Edit
+                      </button>
+                      <button
+                        className="btn-action delete"
+                        onClick={() => handleDelete(sal.id)}
+                        title="Hapus"
+                      >
+                        Hapus
                       </button>
                     </td>
                   </tr>

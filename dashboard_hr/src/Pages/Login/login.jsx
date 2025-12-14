@@ -8,7 +8,7 @@ import { toast } from "sonner";
 import { Eye, EyeOff, LogIn, UserPlus } from "lucide-react";
 import { z } from "zod"; // Zod tetap dipertahankan untuk validasi runtime
 
-// --- Skema Validasi ---
+// Bagian: Skema Validasi
 const loginSchema = z.object({
   email: z.string().email("Email tidak valid"),
   password: z.string().min(6, "Password minimal 6 karakter"),
@@ -22,7 +22,7 @@ const signupSchema = z.object({
 
 export default function Auth() {
   const navigate = useNavigate();
-  // Asumsi useAuth mengembalikan object dengan user, signIn, dan signUp
+  // Bagian: Asumsi Auth
   const { user, signIn, signUp } = useAuth();
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -32,25 +32,25 @@ export default function Auth() {
     email: "",
     password: "",
   });
-  // State error menggunakan object JavaScript biasa
+  // Bagian: State Error
   const [errors, setErrors] = useState({}); 
 
-  // Redirect jika pengguna sudah login
+  // Bagian: Redirect Login
   useEffect(() => {
     if (user) {
       navigate("/");
     }
   }, [user, navigate]);
 
-  // Handle submit formulir
-  const handleSubmit = async (e) => { // Tipe e: React.FormEvent dihapus
+  // Bagian: Handle Submit
+  const handleSubmit = async (e) => { // Bagian: Handle Submit Event
     e.preventDefault();
     setErrors({});
     setLoading(true);
 
     try {
       if (isLogin) {
-        // Logika Login
+        // Bagian: Logika Login
         const validated = loginSchema.parse({ email: formData.email, password: formData.password });
         const { error } = await signIn(validated.email, validated.password);
 
@@ -65,7 +65,7 @@ export default function Auth() {
           navigate("/");
         }
       } else {
-        // Logika Daftar (Sign Up)
+        // Bagian: Logika Daftar
         const validated = signupSchema.parse(formData);
         const { error } = await signUp(validated.email, validated.password, validated.fullName);
 
@@ -81,7 +81,7 @@ export default function Auth() {
         }
       }
     } catch (err) {
-      // Penanganan error Zod
+      // Bagian: Error Zod
       if (err instanceof z.ZodError) {
         const fieldErrors = {}; // Tipe Record<string, string> dihapus
         err.errors.forEach((e) => {
@@ -91,7 +91,7 @@ export default function Auth() {
         });
         setErrors(fieldErrors);
       } else {
-        // Penanganan error non-Zod yang tidak tertangkap di blok atas
+        // Bagian: Error Lainnya
         toast.error("Terjadi kesalahan yang tidak terduga.");
         console.error("Kesalahan: ", err);
       }

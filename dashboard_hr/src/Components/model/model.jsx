@@ -1,7 +1,7 @@
-// src/Components/Modal/Modal.jsx
+// Bagian: Komponen Modal
 import React from 'react';
 import { X } from 'lucide-react';
-import './Model.css'; // Pastikan CSS modal sudah ada (seperti jawaban sebelumnya)
+import './Model.css'; // Bagian: CSS Modal
 
 const Model = ({ isOpen, onClose, title, children }) => {
   if (!isOpen) return null;

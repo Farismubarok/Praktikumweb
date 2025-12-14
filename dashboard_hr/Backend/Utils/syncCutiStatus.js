@@ -1,10 +1,9 @@
 import db from '../Config/db.js';
 
-// Fungsi untuk sync status karyawan berdasarkan tanggal cuti
+// Bagian: Sync Cuti Status
 export const syncCutiStatus = async () => {
   try {
-    // 1. Set status 'Cuti' untuk karyawan yang cutinya sedang berlangsung
-    //    (cuti disetujui, tanggal_mulai <= hari ini, tanggal_selesai >= hari ini)
+    // Bagian: Set Status Cuti
     await db.query(`
       UPDATE tabel_karyawan k
       INNER JOIN tabel_cuti c ON k.id = c.id_karyawan
@@ -14,8 +13,7 @@ export const syncCutiStatus = async () => {
         AND DATE(c.tanggal_selesai) >= CURDATE()
     `);
 
-    // 2. Set status 'Aktif' untuk karyawan yang cutinya sudah selesai atau belum mulai
-    //    (status masih 'Cuti' tapi tidak ada cuti aktif hari ini)
+    // Bagian: Set Status Aktif
     await db.query(`
       UPDATE tabel_karyawan k
       SET k.status = 'Aktif'

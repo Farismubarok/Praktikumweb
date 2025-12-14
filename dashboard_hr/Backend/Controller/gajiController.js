@@ -1,8 +1,8 @@
 import db from '../Config/db.js';
 
-// ==================== GAJI CONTROLLER ====================
+// Bagian: Controller Gaji
 
-// CREATE - Tambah data gaji
+// Bagian: Create Gaji
 export const createGaji = async (req, res) => {
   const { id_karyawan, gaji_pokok, tunjangan, bonus, status_pembayaran, tanggal_pembayaran } = req.body;
 
@@ -24,7 +24,7 @@ export const createGaji = async (req, res) => {
   }
 };
 
-// READ - Ambil semua data gaji
+// Bagian: Get Semua Gaji
 export const getAllGaji = async (req, res) => {
   try {
     const [rows] = await db.query(`
@@ -41,7 +41,7 @@ export const getAllGaji = async (req, res) => {
   }
 };
 
-// READ - Ambil gaji by ID
+// Bagian: Get Gaji by ID
 export const getGajiById = async (req, res) => {
   const { id } = req.params;
   try {
@@ -62,7 +62,7 @@ export const getGajiById = async (req, res) => {
   }
 };
 
-// READ - Ambil gaji by karyawan ID
+// Bagian: Get Gaji by Karyawan ID
 export const getGajiByKaryawanId = async (req, res) => {
   const { id_karyawan } = req.params;
   try {
@@ -82,7 +82,7 @@ export const getGajiByKaryawanId = async (req, res) => {
   }
 };
 
-// UPDATE - Update data gaji
+// Bagian: Update Gaji
 export const updateGaji = async (req, res) => {
   const { id } = req.params;
   const { id_karyawan, gaji_pokok, tunjangan, bonus, status_pembayaran, tanggal_pembayaran } = req.body;
@@ -106,7 +106,7 @@ export const updateGaji = async (req, res) => {
   }
 };
 
-// DELETE - Hapus data gaji
+// Bagian: Delete Gaji
 export const deleteGaji = async (req, res) => {
   const { id } = req.params;
 

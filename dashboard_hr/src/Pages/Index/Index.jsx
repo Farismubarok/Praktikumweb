@@ -1,10 +1,10 @@
-// src/Pages/Index/Index.jsx
+// Bagian: Komponen Index
 
 import React, { useState, useEffect } from 'react';
 import './Index.css';
 import StatCard, { Users, UserPlus, CalendarOff, Clock } from '../../Components/Card/Card'; 
 import { fetchDashboardStats, fetchCuti, formatDate } from '../../utils/api';
-// 1. IMPORT KOMPONEN CHART BARU
+// Bagian: Import Komponen
 import EmployeeChart from '../../Components/charts/EmployeeChart'; 
 
 const Index = () => {

@@ -227,7 +227,7 @@ p.stat-label {
 }
 
 .action-cell {
-    text-align: center;
+    text-align: left;
 }
 
 .btn-edit-icon {
@@ -252,7 +252,7 @@ p.stat-label {
     font-weight: 600;
 }
 
-.status-badge.status-sudah-dibayar {
+.status-badge.status-dibayar {
     background-color: #d1fae5;
     color: #065f46;
 }

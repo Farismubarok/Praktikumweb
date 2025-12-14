@@ -1,20 +1,20 @@
 import db from '../Config/db.js';
 import bcrypt from 'bcryptjs';
 
-// ==================== ADMIN CONTROLLER ====================
+// Bagian: Controller Admin
 
-// CREATE - Register admin baru
+// Bagian: Create Admin
 export const createAdmin = async (req, res) => {
   const { nama_lengkap, email, password } = req.body;
 
   try {
-    // Cek apakah email sudah terdaftar
+    // Bagian: Cek Email Terdaftar
     const [existing] = await db.query('SELECT id FROM tabel_admin WHERE email = ?', [email]);
     if (existing.length > 0) {
       return res.status(400).json({ message: 'Email sudah terdaftar!' });
     }
 
-    // Hash password
+    // Bagian: Hash Password
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const [result] = await db.query(
@@ -32,7 +32,7 @@ export const createAdmin = async (req, res) => {
   }
 };
 
-// LOGIN - Login admin
+// Bagian: Login Admin
 export const loginAdmin = async (req, res) => {
   const { email, password } = req.body;
 
@@ -50,7 +50,7 @@ export const loginAdmin = async (req, res) => {
       return res.status(401).json({ message: 'Email atau password salah!' });
     }
 
-    // Jangan kirim password ke client
+    // Bagian: Hapus Password Response
     const { password: _, ...adminData } = admin;
 
     res.status(200).json({ 
@@ -63,7 +63,7 @@ export const loginAdmin = async (req, res) => {
   }
 };
 
-// READ - Ambil semua admin
+// Bagian: Get Semua Admin
 export const getAllAdmin = async (req, res) => {
   try {
     const [rows] = await db.query('SELECT id, nama_lengkap, email, dibuat_pada FROM tabel_admin ORDER BY id DESC');
@@ -74,7 +74,7 @@ export const getAllAdmin = async (req, res) => {
   }
 };
 
-// READ - Ambil admin by ID
+// Bagian: Get Admin by ID
 export const getAdminById = async (req, res) => {
   const { id } = req.params;
   try {
@@ -90,7 +90,7 @@ export const getAdminById = async (req, res) => {
   }
 };
 
-// UPDATE - Update admin
+// Bagian: Update Admin
 export const updateAdmin = async (req, res) => {
   const { id } = req.params;
   const { nama_lengkap, email, password } = req.body;
@@ -99,12 +99,12 @@ export const updateAdmin = async (req, res) => {
     let query, params;
 
     if (password) {
-      // Jika password diubah
+      // Bagian: Password Diubah
       const hashedPassword = await bcrypt.hash(password, 10);
       query = 'UPDATE tabel_admin SET nama_lengkap = ?, email = ?, password = ? WHERE id = ?';
       params = [nama_lengkap, email, hashedPassword, id];
     } else {
-      // Jika password tidak diubah
+      // Bagian: Password Tidak Diubah
       query = 'UPDATE tabel_admin SET nama_lengkap = ?, email = ? WHERE id = ?';
       params = [nama_lengkap, email, id];
     }
@@ -122,7 +122,7 @@ export const updateAdmin = async (req, res) => {
   }
 };
 
-// DELETE - Hapus admin
+// Bagian: Delete Admin
 export const deleteAdmin = async (req, res) => {
   const { id } = req.params;
 

@@ -1,15 +1,18 @@
-// src/Pages/Cuti/Cuti.jsx
+// Bagian: Komponen Cuti
 
 import React, { useState, useEffect } from 'react';
 import './cuti.css'; 
+import Model from '../../Components/model/model.jsx'; // Bagian: Modal Component
 import { fetchCuti, deleteCuti, updateStatusCuti, formatCutiId, formatDate, } from '../../utils/api';
 
 const Cuti = () => {
   const [requests, setRequests] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false); // Bagian: Modal State
+  const [selectedRequest, setSelectedRequest] = useState(null); // Bagian: Selected Cuti
 
-  // Fetch data cuti
+  // Bagian: Fetch Data Cuti
   const loadCuti = async () => {
     setLoading(true);
     const data = await fetchCuti();
@@ -18,7 +21,10 @@ const Cuti = () => {
   };
 
   useEffect(() => {
-    loadCuti();
+    const t = setTimeout(() => {
+      loadCuti();
+    }, 0);
+    return () => clearTimeout(t);
   }, []);
 
   const handleSearch = (event) => {
@@ -40,6 +46,17 @@ const Cuti = () => {
   const handleReject = async (id) => {
     await updateStatusCuti(id, 'Ditolak');
     loadCuti();
+  };
+
+  // Bagian: Modal Handlers
+  const openDetail = (req) => {
+    setSelectedRequest(req);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setSelectedRequest(null);
+    setIsModalOpen(false);
   };
 
   const filteredRequests = requests.filter(req =>
@@ -102,7 +119,10 @@ const Cuti = () => {
                     </span>
                   </td>
                   <td>
-                    <button className="btn-action view">Detail</button>
+                    <button className="btn-action view" onClick={() => openDetail(req)}>Detail</button>
+                    {req.status !== 'Ditolak' && (
+                      <button className="btn-action cancel" onClick={() => handleCancel(req.id)}>Batalkan</button>
+                    )}
                     {req.status === 'Menunggu' && (
                       <>
                         <button className="btn-action edit" onClick={() => handleApprove(req.id)}>Setujui</button>
@@ -120,6 +140,26 @@ const Cuti = () => {
           </tbody>
         </table>
       </div>
+
+      {/* Bagian: Modal Detail Cuti */}
+      <Model isOpen={isModalOpen} onClose={closeModal} title="Detail Cuti">
+        {selectedRequest ? (
+          <div className="cuti-detail">
+            <p><strong>ID:</strong> {formatCutiId(selectedRequest.id)}</p>
+            <p><strong>Nama:</strong> {selectedRequest.nama_lengkap || '-'}</p>
+            <p><strong>Jabatan:</strong> {selectedRequest.jabatan || '-'}</p>
+            <p><strong>Jenis Cuti:</strong> {selectedRequest.jenis_cuti}</p>
+            <p><strong>Tanggal Mulai:</strong> {formatDate(selectedRequest.tanggal_mulai)}</p>
+            <p><strong>Tanggal Selesai:</strong> {formatDate(selectedRequest.tanggal_selesai)}</p>
+            <p><strong>Durasi:</strong> {selectedRequest.durasi} hari</p>
+            <p><strong>Status:</strong> {selectedRequest.status}</p>
+            {selectedRequest.alasan && <p><strong>Alasan:</strong> {selectedRequest.alasan}</p>}
+            {selectedRequest.tanggal_pengajuan && <p><strong>Pengajuan:</strong> {formatDate(selectedRequest.tanggal_pengajuan)}</p>}
+          </div>
+        ) : (
+          <p>Tidak ada data</p>
+        )}
+      </Model>
       
     </div>
   );

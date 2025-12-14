@@ -1,8 +1,8 @@
 import React from 'react';
 import './Card.css';
 
-// 1. IMPORT IKON DARI REACT-ICONS
-// Kita ambil ikon yang sesuai dari 'react-icons/io5'
+// Bagian: Import Ikon
+// Bagian: Catatan Ikon
 
 import { 
   IoPersonAddSharp, 
@@ -11,28 +11,21 @@ import {
   IoCalendarNumberSharp 
 } from "react-icons/io5";
 
-// --- PENGGANTI PLACEHOLDER ---
-// Sekarang variabel ini mengembalikan komponen React Icon langsung.
-// Kita menggunakan props (...props) agar class CSS dari parent bisa masuk ke ikon.
+// Bagian: Placeholder Ikon
+// Bagian: Placeholder Ikon
+// Bagian: Icon Props
 
 const Users = (props) => <IoPeopleSharp {...props} />;
 const UserPlus = (props) => <IoPersonAddSharp {...props} />;
 
-// Catatan: Jika ingin ikon "Calendar Off" spesifik, mungkin perlu cari di set lain (misal 'lu' atau 'tb'), 
-// tapi di sini saya pakai CalendarNumber sebagai contoh dari io5.
+// Bagian: Catatan Ikon Spesifik
 
 const CalendarOff = (props) => <IoCalendarNumberSharp {...props} />; 
 const Clock = (props) => <IoTimeSharp {...props} />;
 
-/**
- * Komponen StatCard untuk menampilkan ringkasan data statistik di Dashboard.
- * @param {string} title - Judul kartu
- * @param {string|number} value - Nilai statistik
- * @param {React.ElementType} icon - Komponen ikon (dikirim sebagai referensi komponen, bukan elemen < />)
- * @param {('primary'|'success'|'info'|'warning')} variant - Varian warna
- */
+// Bagian: Komponen StatCard
 const StatCard = ({ title, value, icon: Icon, variant }) => {
-  // Tentukan class CSS berdasarkan varian warna yang dipilih
+  // Bagian: CSS Varian
   const variantClass = `stat-card stat-card_gaji--${variant}`;
 
   return (
@@ -42,10 +35,7 @@ const StatCard = ({ title, value, icon: Icon, variant }) => {
         <h2 className="stat-card__value">{value}</h2>
       </div>
       <div className="stat-card__icon-wrapper">
-        {/* Render ikon di sini. 
-           Kita bisa menambahkan props default seperti size jika perlu.
-           ClassName 'stat-card__icon' akan diteruskan ke komponen ikon di atas via {...props}
-        */}
+        {/* Bagian: Render Ikon */}
         {Icon && <Icon className="stat-card__icon" size={24} />}
       </div>
     </div>
@@ -54,5 +44,5 @@ const StatCard = ({ title, value, icon: Icon, variant }) => {
 
 export default StatCard;
 
-// Export ikon-ikon ini agar bisa di-import di Index.jsx / Dashboard
+// Bagian: Export Ikon
 export { Users, UserPlus, CalendarOff, Clock };

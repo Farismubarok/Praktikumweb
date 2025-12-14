@@ -1,8 +1,8 @@
 import db from '../Config/db.js';
 
-// ==================== KARYAWAN CONTROLLER ====================
+// Bagian: Controller Karyawan
 
-// CREATE - Tambah karyawan baru
+// Bagian: Create Karyawan
 export const createKaryawan = async (req, res) => {
   const { nama_lengkap, email, no_telepon, jabatan, id_divisi, status, tanggal_masuk, gaji_pokok, tunjangan, bonus } = req.body;
 
@@ -11,7 +11,7 @@ export const createKaryawan = async (req, res) => {
   try {
     await connection.beginTransaction();
 
-    // Insert ke tabel_karyawan (sesuai struktur database)
+    // Bagian: Insert ke tabel_karyawan
     const [resKaryawan] = await connection.query(
       `INSERT INTO tabel_karyawan 
       (nama_lengkap, email, no_telepon, jabatan, id_divisi, status, tanggal_masuk) 
@@ -21,7 +21,7 @@ export const createKaryawan = async (req, res) => {
 
     const karyawanId = resKaryawan.insertId;
 
-    // Insert ke tabel_gaji jika ada data gaji
+    // Bagian: Insert ke tabel_gaji
     if (gaji_pokok) {
       await connection.query(
         `INSERT INTO tabel_gaji 
@@ -47,7 +47,7 @@ export const createKaryawan = async (req, res) => {
   }
 };
 
-// READ - Ambil semua karyawan
+// Bagian: Get Semua Karyawan
 export const getAllKaryawan = async (req, res) => {
   try {
     const [rows] = await db.query(`
@@ -63,7 +63,7 @@ export const getAllKaryawan = async (req, res) => {
   }
 };
 
-// READ - Ambil karyawan by ID
+// Bagian: Get Karyawan by ID
 export const getKaryawanById = async (req, res) => {
   const { id } = req.params;
   try {
@@ -84,7 +84,7 @@ export const getKaryawanById = async (req, res) => {
   }
 };
 
-// UPDATE - Update data karyawan
+// Bagian: Update Karyawan
 export const updateKaryawan = async (req, res) => {
   const { id } = req.params;
   const { nama_lengkap, email, no_telepon, jabatan, id_divisi, status, tanggal_masuk } = req.body;
@@ -108,7 +108,7 @@ export const updateKaryawan = async (req, res) => {
   }
 };
 
-// DELETE - Hapus karyawan
+// Bagian: Delete Karyawan
 export const deleteKaryawan = async (req, res) => {
   const { id } = req.params;
 

@@ -1,8 +1,8 @@
 import db from '../Config/db.js';
 
-// ==================== DIVISI CONTROLLER ====================
+// Bagian: Controller Divisi
 
-// CREATE - Tambah divisi baru
+// Bagian: Create Divisi
 export const createDivisi = async (req, res) => {
   const { nama_divisi, deskripsi, anggaran, id_kepala_divisi } = req.body;
 
@@ -16,7 +16,7 @@ export const createDivisi = async (req, res) => {
 
     const newDivisiId = result.insertId;
 
-    // Auto-update karyawan's id_divisi jika jadi kepala divisi
+    // Bagian: Update Kepala Divisi
     if (id_kepala_divisi) {
       await db.query(
         `UPDATE tabel_karyawan SET id_divisi = ? WHERE id = ?`,
@@ -34,7 +34,7 @@ export const createDivisi = async (req, res) => {
   }
 };
 
-// READ - Ambil semua divisi
+// Bagian: Get Semua Divisi
 export const getAllDivisi = async (req, res) => {
   try {
     const [rows] = await db.query(`
@@ -50,7 +50,7 @@ export const getAllDivisi = async (req, res) => {
   }
 };
 
-// READ - Ambil divisi by ID
+// Bagian: Get Divisi by ID
 export const getDivisiById = async (req, res) => {
   const { id } = req.params;
   try {
@@ -71,7 +71,7 @@ export const getDivisiById = async (req, res) => {
   }
 };
 
-// UPDATE - Update divisi
+// Bagian: Update Divisi
 export const updateDivisi = async (req, res) => {
   const { id } = req.params;
   const { nama_divisi, deskripsi, anggaran, id_kepala_divisi } = req.body;
@@ -88,7 +88,7 @@ export const updateDivisi = async (req, res) => {
       return res.status(404).json({ message: 'Divisi tidak ditemukan' });
     }
 
-    // Auto-update karyawan's id_divisi jika jadi kepala divisi
+    // Bagian: Auto Update Kepala Divisi
     if (id_kepala_divisi) {
       await db.query(
         `UPDATE tabel_karyawan SET id_divisi = ? WHERE id = ?`,
@@ -103,7 +103,7 @@ export const updateDivisi = async (req, res) => {
   }
 };
 
-// DELETE - Hapus divisi
+// Bagian: Delete Divisi
 export const deleteDivisi = async (req, res) => {
   const { id } = req.params;
 
@@ -123,7 +123,7 @@ export const deleteDivisi = async (req, res) => {
 
 export const getDivisiStats = async (req, res) => {
   try {
-    // Query menghitung jumlah karyawan (count) dan dikelompokkan berdasarkan nama divisi
+    // Bagian: Query Stats Divisi
     const [rows] = await db.query(`
       SELECT d.nama_divisi, COUNT(k.id) as total 
       FROM tabel_divisi d

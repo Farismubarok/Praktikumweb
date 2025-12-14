@@ -10,7 +10,7 @@ const db = mysql.createPool({
   database: process.env.DB_NAME || 'ujianpweb',
 });
 
-// Test koneksi database
+// Bagian: Test DB Koneksi
 db.getConnection()
   .then(connection => {
     console.log('✅ Database connected successfully!');
