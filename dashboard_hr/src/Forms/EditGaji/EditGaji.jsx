@@ -1,4 +1,4 @@
-// src/Forms/EditGaji/EditGaji.jsx
+// Bagian: Form EditGaji
 import React, { useState, useEffect } from 'react';
 import './EditGaji.css';
 import { updateGaji, createGaji } from '../../utils/api';
@@ -16,12 +16,12 @@ const EditGaji = ({ selectedKaryawan, gajiData, onClose, onSuccess, onChangeKary
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Set current month as default periode
+    // Bagian: Set Periode Default
     const now = new Date();
     const monthYear = now.toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
     
     if (gajiData) {
-      // Jika edit existing gaji
+      // Bagian: Jika Edit Existing
       setFormData({
         gaji_pokok: gajiData.gaji_pokok || '',
         tunjangan: gajiData.tunjangan || '',
@@ -30,7 +30,7 @@ const EditGaji = ({ selectedKaryawan, gajiData, onClose, onSuccess, onChangeKary
         status_pembayaran: gajiData.status_pembayaran || 'Pending',
       });
     } else {
-      // Jika tambah gaji baru
+      // Bagian: Jika Tambah Baru
       setFormData(prev => ({
         ...prev,
         periode: monthYear,
@@ -63,7 +63,7 @@ const EditGaji = ({ selectedKaryawan, gajiData, onClose, onSuccess, onChangeKary
 
     setLoading(true);
     try {
-      // Hanya kirim field yang ada di database
+      // Bagian: Field DB
       const dataToSend = {
         id_karyawan: selectedKaryawan.id,
         gaji_pokok: formData.gaji_pokok || 0,
@@ -74,11 +74,11 @@ const EditGaji = ({ selectedKaryawan, gajiData, onClose, onSuccess, onChangeKary
       };
 
       if (gajiData && gajiData.id) {
-        // Update existing
+        // Bagian: Update Existing
         await updateGaji(gajiData.id, dataToSend);
         toast.success('Data gaji berhasil diperbarui');
       } else {
-        // Create new
+        // Bagian: Create New
         await createGaji(dataToSend);
         toast.success('Data gaji berhasil disimpan');
       }

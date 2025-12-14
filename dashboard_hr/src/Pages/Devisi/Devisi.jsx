@@ -1,4 +1,4 @@
-// src/Pages/Devisi/Devisi.jsx
+// Bagian: Komponen Devisi
 
 import React, { useState, useEffect } from 'react';
 import './Devisi.css'; 
@@ -14,7 +14,7 @@ const Devisi = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingDivisi, setEditingDivisi] = useState(null);
 
-  // Fetch data divisi
+  // Bagian: Fetch Data Divisi
   const loadDivisi = async () => {
     setLoading(true);
     try {

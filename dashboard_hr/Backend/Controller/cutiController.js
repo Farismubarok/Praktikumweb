@@ -1,8 +1,8 @@
 import db from '../Config/db.js';
 
-// ==================== CUTI CONTROLLER ====================
+// Bagian: Controller Cuti
 
-// CREATE - Ajukan cuti baru
+// Bagian: Create Cuti
 export const createCuti = async (req, res) => {
   const { id_karyawan, jenis_cuti, tanggal_mulai, tanggal_selesai, durasi, alasan } = req.body;
 
@@ -24,7 +24,7 @@ export const createCuti = async (req, res) => {
   }
 };
 
-// READ - Ambil semua data cuti
+// Bagian: Get Semua Cuti
 export const getAllCuti = async (req, res) => {
   try {
     const [rows] = await db.query(`
@@ -40,7 +40,7 @@ export const getAllCuti = async (req, res) => {
   }
 };
 
-// READ - Ambil cuti by ID
+// Bagian: Get Cuti by ID
 export const getCutiById = async (req, res) => {
   const { id } = req.params;
   try {
@@ -61,7 +61,7 @@ export const getCutiById = async (req, res) => {
   }
 };
 
-// READ - Ambil cuti by karyawan ID
+// Bagian: Get Cuti by Karyawan ID
 export const getCutiByKaryawanId = async (req, res) => {
   const { id_karyawan } = req.params;
   try {
@@ -80,7 +80,7 @@ export const getCutiByKaryawanId = async (req, res) => {
   }
 };
 
-// UPDATE - Update data cuti
+// Bagian: Update Cuti
 export const updateCuti = async (req, res) => {
   const { id } = req.params;
   const { jenis_cuti, tanggal_mulai, tanggal_selesai, durasi, alasan, status } = req.body;
@@ -104,13 +104,13 @@ export const updateCuti = async (req, res) => {
   }
 };
 
-// UPDATE - Approve/Reject cuti (update status saja)
+// Bagian: Update Status Cuti
 export const updateStatusCuti = async (req, res) => {
   const { id } = req.params;
   const { status } = req.body; // 'Disetujui', 'Menunggu', 'Ditolak'
 
   try {
-    // Ambil data cuti ini
+    // Bagian: Ambil Data Cuti
     const [cutiRows] = await db.query(`SELECT id_karyawan FROM tabel_cuti WHERE id = ?`, [id]);
     
     if (cutiRows.length === 0) {
@@ -119,13 +119,13 @@ export const updateStatusCuti = async (req, res) => {
 
     const id_karyawan = cutiRows[0].id_karyawan;
 
-    // Update status cuti
+    // Bagian: Update Status Cuti DB
     await db.query(
       `UPDATE tabel_cuti SET status = ? WHERE id = ?`,
       [status, id]
     );
 
-    // Jika ditolak, kembalikan status karyawan ke 'Aktif' (jika sedang cuti)
+    // Bagian: Jika Ditolak
     if (status === 'Ditolak') {
       await db.query(
         `UPDATE tabel_karyawan SET status = 'Aktif' WHERE id = ? AND status = 'Cuti'`,
@@ -133,7 +133,7 @@ export const updateStatusCuti = async (req, res) => {
       );
     }
     
-    // Note: Jika disetujui, status karyawan akan di-update oleh syncCutiStatus
+    // Bagian: Catatan Sync
     // berdasarkan tanggal_mulai dan tanggal_selesai
 
     res.status(200).json({ message: `Status cuti berhasil diubah ke ${status}!` });
@@ -143,7 +143,7 @@ export const updateStatusCuti = async (req, res) => {
   }
 };
 
-// DELETE - Hapus data cuti
+// Bagian: Delete Cuti
 export const deleteCuti = async (req, res) => {
   const { id } = req.params;
 

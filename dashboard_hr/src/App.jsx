@@ -1,9 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Sidebar from './Components/SideBar/Sidebar';
-import Navbar from './Components/Navbar/navbar';
+import Navbar from './Components/Navbar/Navbar';
 import './App.css';
 
-// Pages
+// Bagian: Pages
 import Index from './Pages/Index/Index';
 import DataKaryawan from './Pages/Data_Karyawan/DataKaryawan';
 import Devisi from './Pages/Devisi/Devisi';

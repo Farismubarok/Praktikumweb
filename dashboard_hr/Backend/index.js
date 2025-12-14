@@ -2,36 +2,36 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 
-// Import Routes
+// Bagian: Import Routes
 import karyawanRoutes from './Routes/karyawanRoutes.js';
 import gajiRoutes from './Routes/gajiRoutes.js';
 import divisiRoutes from './Routes/divisiRoutes.js';
 import cutiRoutes from './Routes/cutiRoutes.js';
 import adminRoutes from './Routes/adminRoutes.js';
 
-// Import Utils
+// Bagian: Import Utils
 import { syncCutiStatus } from './Utils/syncCutiStatus.js';
 
 dotenv.config();
 const app = express();
 
 app.use(cors());
-app.use(express.json()); // Agar bisa baca JSON dari React
+app.use(express.json()); // Bagian: Middleware JSON
 
-// Sync status cuti saat server start
+// Bagian: Sync Cuti Start
 syncCutiStatus();
 
-// Sync status cuti setiap 1 menit (untuk production bisa tiap 1 jam)
+// Bagian: Sync Interval
 setInterval(syncCutiStatus, 60 * 1000);
 
-// API Routes
+// Bagian: API Routes
 app.use('/api/karyawan', karyawanRoutes);
 app.use('/api/gaji', gajiRoutes);
 app.use('/api/divisi', divisiRoutes);
 app.use('/api/cuti', cutiRoutes);
 app.use('/api/admin', adminRoutes);
 
-// Root endpoint
+// Bagian: Root Endpoint
 app.get('/', (req, res) => {
   res.json({ 
     message: 'HR Dashboard API',

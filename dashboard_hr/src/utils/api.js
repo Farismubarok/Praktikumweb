@@ -1,15 +1,15 @@
-// src/utils/api.js - Centralized API calls
+// Bagian: API Utils
 
 const API_BASE = 'http://localhost:3000/api';
 
-// ==================== FORMAT ID HELPERS ====================
+// Bagian: Helper Format ID
 
 export const formatEmployeeId = (id) => `EMP${String(id).padStart(3, '0')}`;
 export const formatDivisiId = (id) => `DIV${String(id).padStart(3, '0')}`;
 export const formatGajiId = (id) => `SAL${String(id).padStart(3, '0')}`;
 export const formatCutiId = (id) => `CUT${String(id).padStart(3, '0')}`;
 
-// ==================== KARYAWAN API ====================
+// Bagian: API Karyawan
 
 export const fetchKaryawan = async () => {
   try {
@@ -47,7 +47,7 @@ export const deleteKaryawan = async (id) => {
   return response.json();
 };
 
-// ==================== DIVISI API ====================
+// Bagian: API Divisi
 
 export const fetchDivisi = async () => {
   try {
@@ -85,7 +85,7 @@ export const deleteDivisi = async (id) => {
   return response.json();
 };
 
-// ==================== GAJI API ====================
+// Bagian: API Gaji
 
 export const fetchGaji = async () => {
   try {
@@ -112,7 +112,7 @@ export const fetchGajiByKaryawanId = async (id_karyawan) => {
     const response = await fetch(`${API_BASE}/gaji/karyawan/${id_karyawan}`);
     if (!response.ok) throw new Error('Gagal fetch data gaji karyawan');
     const data = await response.json();
-    // Return data gaji terbaru (yang pertama karena sudah di-order DESC)
+    // Bagian: Return Gaji Terbaru
     return data.length > 0 ? data[0] : null;
   } catch (error) {
     console.error('Error fetching gaji by karyawan:', error);
@@ -136,7 +136,7 @@ export const deleteGaji = async (id) => {
   return response.json();
 };
 
-// ==================== CUTI API ====================
+// Bagian: API Cuti
 
 export const fetchCuti = async () => {
   try {
@@ -174,7 +174,7 @@ export const deleteCuti = async (id) => {
   return response.json();
 };
 
-// ==================== ADMIN API ====================
+// Bagian: API Admin
 
 export const loginAdmin = async (email, password) => {
   const response = await fetch(`${API_BASE}/admin/login`, {
@@ -194,7 +194,7 @@ export const registerAdmin = async (data) => {
   return response.json();
 };
 
-// ==================== DASHBOARD STATS ====================
+// Bagian: Dashboard Stats
 
 export const fetchDashboardStats = async () => {
   try {
@@ -209,7 +209,7 @@ export const fetchDashboardStats = async () => {
     const inactiveEmployees = karyawan.filter(k => k.status === 'Tidak Aktif').length;
     const pendingApprovals = cuti.filter(c => c.status === 'Menunggu').length;
     
-    // Hitung karyawan baru bulan ini
+    // Bagian: Hitung Karyawan Baru
     const now = new Date();
     const thisMonth = now.getMonth();
     const thisYear = now.getFullYear();
@@ -239,7 +239,7 @@ export const fetchDashboardStats = async () => {
   }
 };
 
-// ==================== HELPER FUNCTIONS ====================
+// Bagian: Helper Functions
 
 export const formatRupiah = (number) => {
   return new Intl.NumberFormat('id-ID', {
@@ -259,7 +259,7 @@ export const formatDate = (dateString) => {
   });
 };
 
-// --- SERVICE DASHBOARD ---
+// Bagian: Service Dashboard
 export const getDashboardStats = async () => {
   try {
     const response = await fetch(`${API_BASE}/divisi/stats`);
@@ -267,6 +267,6 @@ export const getDashboardStats = async () => {
     return await response.json();
   } catch (error) {
     console.error(error);
-    throw error; // Return array kosong jika error agar chart tidak crash
+    throw error; // Bagian: Error Handling
   }
 };

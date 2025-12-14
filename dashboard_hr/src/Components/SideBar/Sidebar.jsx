@@ -1,6 +1,6 @@
-// src/Components/Sidebar.jsx
+// Bagian: Komponen Sidebar
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom'; // Tambahkan ini
+import { Link, useLocation } from 'react-router-dom'; // Bagian: Import Router
 import { 
   LayoutDashboard, Users, CreditCard, 
   Calendar, Settings, Building2 
@@ -8,9 +8,9 @@ import {
 import './sidebar.css'; 
 
 const Sidebar = () => {
-  const location = useLocation(); // Untuk mendeteksi halaman aktif
+  const location = useLocation(); // Bagian: Deteksi Halaman Aktif
   
-  // Mapping path ke menu
+  // Bagian: Daftar Menu Sidebar
   const menuItems = [
     { path: '/', name: 'Dashboard', icon: <LayoutDashboard size={18} /> },
     { path: '/data-karyawan', name: 'Data Karyawan', icon: <Users size={18} /> },
@@ -30,7 +30,7 @@ const Sidebar = () => {
       
       <nav className="sidebar-nav">
         {menuItems.map((item) => {
-          // Cek apakah path saat ini cocok dengan item menu
+          // Bagian: Cek Menu Aktif
           const isActive = location.pathname === item.path;
           
           return (

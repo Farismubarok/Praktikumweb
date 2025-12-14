@@ -1,6 +1,6 @@
 import React from 'react';
 import { Bell } from 'lucide-react';
-import './navbar.css'; // Import CSS terpisah
+import './navbar.css'; // Bagian: Import CSS
 
 const Navbar = () => {
   return (

@@ -1,4 +1,4 @@
-// src/Components/Charts/EmployeeChart.jsx
+// Bagian: Komponen EmployeeChart
 import React, { useEffect, useState } from 'react';
 import { 
   BarChart, 
@@ -16,14 +16,14 @@ const EmployeeChart = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Warna-warna batang chart yang berbeda
+  // Bagian: Chart Warna
   const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];
 
   useEffect(() => {
     const loadData = async () => {
       try {
         const stats = await getDashboardStats();
-        // stats format: [{ nama_divisi: 'IT', total: 5 }, ...]
+        // Bagian: Stats Format
         setData(stats);
       } catch (error) {
         console.error("Gagal load chart data");
@@ -59,7 +59,7 @@ const EmployeeChart = () => {
                     axisLine={false} 
                     tickLine={false} 
                     tick={{fill: '#6b7280', fontSize: 12}} 
-                    allowDecimals={false} // Agar angka sumbu Y bulat (jumlah orang)
+                    allowDecimals={false} // Bagian: Y Axis Format
                 />
                 <Tooltip 
                     cursor={{fill: 'transparent'}}

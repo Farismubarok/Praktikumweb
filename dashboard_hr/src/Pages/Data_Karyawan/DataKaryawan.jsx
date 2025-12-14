@@ -1,10 +1,10 @@
-// src/Pages/Data_Karyawan/DataKaryawan.jsx
+// Bagian: Komponen DataKaryawan
 import React, { useState, useEffect } from 'react';
 import './DataKaryawan.css';
 import { fetchKaryawan, fetchDivisi, deleteKaryawan, formatEmployeeId, formatDate } from '../../utils/api';
 import { Search, ChevronLeft, ChevronRight } from 'lucide-react';
 
-// Import Komponen Modal dan Form
+// Bagian: Import Komponen
 import Model from '../../Components/model/model';
 import TambahKaryawan from '../../Forms/Tambah_Karyawan/TambahKaryawan';
 import EditKaryawan from '../../Forms/EditKaryawan/EditKaryawan';
@@ -18,12 +18,12 @@ const DataKaryawan = () => {
   const [divisiList, setDivisiList] = useState([]);
   const [loading, setLoading] = useState(true);
   
-  // Filter states
+  // Bagian: State Filter
   const [searchTerm, setSearchTerm] = useState('');
   const [filterDivisi, setFilterDivisi] = useState('');
   const [filterStatus, setFilterStatus] = useState('');
 
-  // Fetch data saat komponen dimuat
+  // Bagian: Fetch Data
   const loadKaryawan = async () => {
     setLoading(true);
     const data = await fetchKaryawan();
@@ -43,7 +43,7 @@ const DataKaryawan = () => {
     fetchData();
   }, []);
 
-  // Filter karyawan
+  // Bagian: Filter Karyawan
   const filteredKaryawan = karyawanList.filter((emp) => {
     const matchSearch = 
       emp.nama_lengkap?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -54,18 +54,18 @@ const DataKaryawan = () => {
     return matchSearch && matchDivisi && matchStatus;
   });
 
-  // Handle edit karyawan
+  // Bagian: Handle Edit
   const handleEdit = (emp) => {
     setSelectedKaryawan(emp);
     setIsEditModalOpen(true);
   };
 
-  // Handle hapus karyawan
+  // Bagian: Handle Hapus
   const handleDelete = async (id) => {
     if (window.confirm('Yakin ingin menghapus karyawan ini?')) {
       await deleteKaryawan(id);
       toast.success('Karyawan berhasil dihapus');
-      loadKaryawan(); // Refresh data
+      loadKaryawan(); // Bagian: Refresh Data
     }
   };
 
@@ -147,7 +147,7 @@ const DataKaryawan = () => {
                         <td>{emp.nama_divisi || '-'}</td>
                         <td>{formatDate(emp.tanggal_masuk)}</td>
                         <td>
-                          <span className={`badge ${emp.status?.toLowerCase().replace(' ', '-')}`}>
+                          <span className={`status-badge status-disetujui ${emp.status?.toLowerCase().replace(' ', '-')}`}>
                             {emp.status}
                           </span>
                         </td>

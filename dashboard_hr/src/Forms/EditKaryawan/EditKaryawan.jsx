@@ -17,14 +17,14 @@ const EditKaryawan = ({ karyawan, onClose, onSuccess }) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Load divisi list
+    // Bagian: Load Divisi
     const loadDivisi = async () => {
       const data = await fetchDivisi();
       setDivisiList(data);
     };
     loadDivisi();
 
-    // Set form data dari karyawan yang dipilih
+    // Bagian: Set Form Data
     if (karyawan) {
       setFormData({
         nama_lengkap: karyawan.nama_lengkap || '',

@@ -5,13 +5,13 @@ export const useAddEmployee = (onClose, onSuccess) => {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
 
-  // State awal sesuai spesifikasi form
+  // Bagian: State Form
   const [formData, setFormData] = useState({
-    // Step 1: Informasi Pribadi
+    // Bagian: Step 1
     nama_lengkap: '', email: '', no_telepon: '', tanggal_masuk: '',
-    // Step 2: Posisi & Jabatan
+    // Bagian: Step 2
     id_divisi: '', jabatan: '', status: '',
-    // Step 3: Kompensasi (Gaji)
+    // Bagian: Step 3
     gaji_pokok: '', tunjangan: '', bonus: ''
   });
 
